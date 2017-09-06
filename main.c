@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/06 09:39:49 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/06 11:14:20 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,20 @@ int    my_key_funct(int keycode/*, void *param*/) // struct mlx dans param
 
 int    main(void)
 {
-    void *mlx;
-    void *win;
+    t_env   env;
 
-    mlx = mlx_init();
-    win = mlx_new_window(mlx, 400, 400, "mlx 42");
+    env.mlx = mlx_init();
+    env.win = mlx_new_window(env.mlx, 400, 400, "mlx 42");
 
     int y = 50;
     while (y++ < 150)
     {
         int x = 50;
         while (x++ < 150)
-            mlx_pixel_put(mlx, win, x, y, 0x00FFFFFF);
+            mlx_pixel_put(env.mlx, env.win, x, y, 0x00FFFFFF);
     }
 
-    mlx_key_hook(win, my_key_funct, 0); //struct mlx au lieu de 0
-    mlx_loop(mlx);
+    mlx_key_hook(env.win, my_key_funct, 0); //struct mlx au lieu de 0
+    mlx_loop(env.mlx);
     return (0);
 }

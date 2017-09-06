@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/06 09:32:51 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/06 10:12:17 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define FdF_H
 
 # include "mlx.h"
-//# include "libft.h"
+# include "libft.h"
 
-#include <stdio.h> //
+# include <stdio.h> //
 
 typedef struct		s_coords
 {
