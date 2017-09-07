@@ -6,15 +6,15 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/06 11:14:20 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/07 07:19:30 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-int    my_key_funct(int keycode/*, void *param*/) // struct mlx dans param
+int    manage_key(int keycode, t_env *env)
 {
-    printf("keycode -> %d\n", keycode);
+    printf("keycode -> %d\ncoords -> %d", keycode, env->win.l);
     return (0);
 }
 
@@ -22,18 +22,22 @@ int    main(void)
 {
     t_env   env;
 
+    env.win.l = 400;
+    env.win.h = 400;
+    env.win.title = "mlx 42";
+
     env.mlx = mlx_init();
-    env.win = mlx_new_window(env.mlx, 400, 400, "mlx 42");
+    env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
 
     int y = 50;
     while (y++ < 150)
     {
         int x = 50;
         while (x++ < 150)
-            mlx_pixel_put(env.mlx, env.win, x, y, 0x00FFFFFF);
+            mlx_pixel_put(env.mlx, env.win.ptr, x, y, 0x00FFFFFF);
     }
 
-    mlx_key_hook(env.win, my_key_funct, 0); //struct mlx au lieu de 0
+    mlx_key_hook(env.win.ptr, manage_key, &env);
     mlx_loop(env.mlx);
     return (0);
 }

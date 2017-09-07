@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/06 10:12:17 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/07 06:28:06 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,17 @@ typedef struct		s_coords
 
 typedef struct		s_win
 {
-    int             x;
-    int             y;
+    int             l;
+    int             h;
+	void			*ptr;
+	char			*title;
 }                   t_win;
 
 typedef struct		s_env
 {
 	void			*mlx;
-    struct s_win    *win;
-    struct s_coords *coords;
+    struct s_win	win;
+    struct s_coords coords;
 }                   t_env;
 
 #endif
