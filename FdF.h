@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/07 06:28:06 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/08 09:11:42 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,21 @@
 # include "libft.h"
 
 # include <stdio.h> //
+# define BLANK 0x00FFFFFF
 
 typedef struct		s_coords
 {
 	int				x;
 	int				y;
-    int             color;
 }					t_coords;
+
+typedef struct		s_img
+{
+	void			*ptr;
+	char			*data;
+	int				l;
+	int				h;
+}                   t_img;
 
 typedef struct		s_win
 {
@@ -35,9 +43,15 @@ typedef struct		s_win
 
 typedef struct		s_env
 {
+    unsigned int	color;
 	void			*mlx;
-    struct s_win	win;
     struct s_coords coords;
+	struct s_img	img;
+    struct s_win	win;
 }                   t_env;
+
+int		manage_key();
+//int		manage_mouse();
+//int		manage_expose();
 
 #endif
