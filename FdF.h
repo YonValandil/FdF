@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/08 09:11:42 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/20 00:16:43 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # include <stdio.h> //
 # define BLANK 0x00FFFFFF
+
+//typedef enum 		
 
 typedef struct		s_coords
 {

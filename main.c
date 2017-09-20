@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/08 09:50:54 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/20 05:45:44 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,22 @@ void	test_droite(int x1, int y1, int x2, int y2, t_env env)
         x++;
     }
 }
+
+void	make_droite(int x1, int x2, int y1, int y2)
+{
+    int     dx;
+    int     dy;
+    int     m;
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+    m = dy / dx;
+
+    while ()
+    {
+    }
+}
+
 int     main(void)
 {
     t_env   env;
@@ -60,11 +76,6 @@ int     main(void)
     //mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr, env.coords.x, env.coords.y);
 
     test_droite(150, 150, 200, 200, env);
-    test_droite(200, 200, 220, 150, env);
-    test_droite(((((200 + 150) / (200 + 160)) * (200 + 220)) - 20),
-                          ((((200 + 150) / (200 + 160)) * (200 + 150)) - 200), 160, 160, env);
-
-    ft_putnbr((((200 + 150) / (200 + 160)) * (200 + 150)) - 200);
 
     //mlx management event
     mlx_key_hook(env.win.ptr, manage_key, &env);
