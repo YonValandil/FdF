@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/20 00:16:43 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/21 09:27:57 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,41 @@
 # define FdF_H
 
 # include "mlx.h"
+//# include "X.h" //a ajouter dans include
 # include "libft.h"
 
 # include <stdio.h> //
-# define BLANK 0x00FFFFFF
 
-//typedef enum 		
+# define BLANK		0x00FFFFFF
+# define HAUTEUR	400
+# define LARGEUR	400
+
+/*enum e_screen
+{
+	LARGEUR;
+	LONGUEUR;
+};*/
 
 typedef struct		s_coords
 {
 	int				x;
 	int				y;
+	unsigned int	color;
 }					t_coords;
+
+typedef struct		s_line
+{
+	t_coords		p1;
+	t_coords		p2;
+	int 			dx;
+	int 			dy;
+	int				m;
+	
+	int				sx;
+	int				sy;
+	int				err;
+
+}					t_line;
 
 typedef struct		s_img
 {
@@ -45,14 +68,16 @@ typedef struct		s_win
 
 typedef struct		s_env
 {
-    unsigned int	color;
 	void			*mlx;
-    struct s_coords coords;
 	struct s_img	img;
     struct s_win	win;
 }                   t_env;
 
-int		manage_key();
+int			abs(int x);
+void		set_env(t_env *env);
+t_coords 	set_pixel(int x, int y, unsigned int color);
+void		draw_line(t_env, t_coords p1, t_coords p2);
+int			manage_key(int keycode, t_env *env);
 //int		manage_mouse();
 //int		manage_expose();
 
