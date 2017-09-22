@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/21 09:27:57 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/22 08:29:24 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ typedef struct		s_line
 	t_coords		p2;
 	int 			dx;
 	int 			dy;
-	int				m;
-	
-	int				sx;
-	int				sy;
 	int				err;
 
 }					t_line;
@@ -78,7 +74,6 @@ void		set_env(t_env *env);
 t_coords 	set_pixel(int x, int y, unsigned int color);
 void		draw_line(t_env, t_coords p1, t_coords p2);
 int			manage_key(int keycode, t_env *env);
-//int		manage_mouse();
-//int		manage_expose();
+int			manage_mouse(int button, int x, int y, t_env *env);
 
 #endif
