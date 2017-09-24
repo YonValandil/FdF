@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/24 05:54:51 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/24 09:56:54 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,54 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
     }
 }
 
-int     parse(t_env env, char *buff)
+size_t  ft_arrlen(char **arr)
 {
-    char *line;
+    size_t  i;
 
+    i = 0
+    while (arr[i])
+        ++i;
+    return (i);
+}
+
+void	ft_lstadd_end(t_list **alst, t_list *new)
+{
+	while ()
+	{
+
+	}
+}
+
+t_list	*parse(t_env env, char *buff) //verif a faire pour map non valide
+{
+	t_list		*list;
+    char        *line;
+    char        **grid;
+    int         *tmp;
+    size_t		len;
+	int			i;
+
+	list = NULL;
     fd = open(buff, O_RDONLY);
     while (get_next_line(fd, &line) > 0)
     {
-        if ()
+        if ((grid = ft_strsplit(line, ' ')))
         {
+			len = ft_arrlen(grid);
+            tmp = ft_memmalloc(sizeof(int) * len);
+			i = 0;
+			while (grid[i])
+			{
+				tmp[i] = ft_atoi(grid[i]);
+				++i;
+			}
+			ft_lstadd_end(&list, ft_lstnew(tmp, len * sizeof(int)));
+			ft_memdel(&tmp);
         }
-        ft_memdel(&line);
+        ft_strdel(&line);
+		close(fd);
     }
-    close(fd);
+	return (list); //a verifier pour une map full vide
 }
 
 int         main(int argc, *argv[])
