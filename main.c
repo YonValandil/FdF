@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/22 08:37:47 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/24 05:54:51 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ void	   set_env(t_env *env)
     env->win.h = HAUTEUR;
     env->win.title = ft_strdup("mlx 42");
 
-    env->img.l = LARGEUR;
-    env->img.h = HAUTEUR;
+    env->img.l = LARGEUR_IMG;
+    env->img.h = HAUTEUR_IMG;
+    env->img.bpp = 16;
+    env->img.size_line = LARGEUR_IMG;
+    env->img.endian = 0;
 }
 
 t_coords    set_pixel(int x, int y, unsigned int color)
@@ -82,9 +85,30 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
     }
 }
 
-int         main(void)
+int     parse(t_env env, char *buff)
+{
+    char *line;
+
+    fd = open(buff, O_RDONLY);
+    while (get_next_line(fd, &line) > 0)
+    {
+        if ()
+        {
+        }
+        ft_memdel(&line);
+    }
+    close(fd);
+}
+
+int         main(int argc, *argv[])
 {
     t_env       env;
+
+    if(argc != 2)
+    {
+        return (0);
+        write(1, "usage: ./FdF File", 17)
+    }
 
     set_env(&env);
 
@@ -92,20 +116,23 @@ int         main(void)
     env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
     //(unsigned int) =  mlx_get_color_value(env.mlx, env.color);
 
+    if((parse(argv[1]))
+    {
+        write(1, "map invalide", 12);
+        return (0);
+    }
+
+    draw_line(env, set_pixel(0, 0, BLANK), set_pixel(400, 400, BLANK));
+    draw_line(env, set_pixel(0, 200, BLANK), set_pixel(340, 0, BLANK));
+
     //creer une image:
     env.img.ptr = mlx_new_image(env.mlx, env.img.l, env.img.h);
     //la remplir:
-    env.img.data = mlx_get_data_addr(env.img.ptr, int *bit_per_pixels,
-        , int *endian);
+    env.img.data = mlx_get_data_addr(env.img.ptr, &env.img.bpp,
+    &env.img.size_line, &env.img.endian);
     //l'afficher:
     mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr,
         0, 0);
-
-    //test_droite(set_pixel(150, 150, BLANK), set_pixel(200, 200, BLANK), env);
-    draw_line(env, set_pixel(0, 0, BLANK), set_pixel(400, 400, BLANK));
-    draw_line(env, set_pixel(0, 200, BLANK), set_pixel(340, 0, BLANK));
-    draw_line(env, set_pixel(100, 50, BLANK), set_pixel(0, 200, BLANK));
-    draw_line(env, set_pixel(10, 10, BLANK), set_pixel(20, 390, BLANK));
 
     //mlx management event
     //mlx_hook(env.win.ptr, event, mask, ptr_fcnt, &event) //need to include X.h
