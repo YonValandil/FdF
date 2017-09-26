@@ -4,14 +4,14 @@
 CC =		gcc
 EXEC =		fdf
 LIB =		ft
-SRCS_DIR =	./
+SRCS_DIR =	./src/
 OBJS_DIR =	./
 LIB_DIR = 	./libft/
-MLX = 		-lmlx -framework OpenGL -framework AppKit
-HEADER =	./
+MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+HEADER =	./include/
 CFLAGS =	-Wall -Werror -Wextra -g
 ARFLAGS =	-rcs
-CFILES =	main
+CFILES =	main get_next_line
 
 SRCS =		$(CFILES:%=$(SRCS_DIR)%.c)
 OBJS =		$(SRCS:%.c=$(OBJS_DIR)%.o)
@@ -22,12 +22,12 @@ all:
 
 clean:
 	rm -f $(OBJS)
-	@make libft/ clean
+	@make -C libft/ clean
 	@echo clean $@ Done !
 
 fclean:		clean
 	rm -f $(EXEC)
-	@make libft/ fclean
+	@make -C libft/ fclean
 	@echo fclean $@ Done !
 
 re:			fclean all

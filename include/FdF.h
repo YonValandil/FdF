@@ -6,20 +6,23 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/24 04:40:48 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/26 08:39:43 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FdF_H
 # define FdF_H
 
-# include "mlx.h"
+# include </usr/local/include/mlx.h>
 //# include "X.h" //a ajouter dans include
 # include "libft.h"
-
+# include "get_next_line.h"
 # include <stdio.h> //
 
 # define BLANK			0x00FFFFFF
+# define BLUE			0x000000FF
+# define GREEN			0x0000FF00
+# define RED			0x00FF0000
 # define HAUTEUR		400
 # define LARGEUR		400
 # define HAUTEUR_IMG	400
@@ -76,8 +79,11 @@ typedef struct		s_env
 }                   t_env;
 
 int			abs(int x);
+void		ft_lstadd_end(t_list **alist, t_list *new);
 void		set_env(t_env *env);
-int			parse(t_env env, char *buff);
+t_list		*parse(char *buff);
+void		projection(t_env *env);
+void		put_pixel_img(t_env *env, t_coords p);
 t_coords 	set_pixel(int x, int y, unsigned int color);
 void		draw_line(t_env, t_coords p1, t_coords p2);
 int			manage_key(int keycode, t_env *env);

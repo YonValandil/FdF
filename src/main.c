@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/24 09:56:54 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/26 08:51:14 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ int       manage_mouse(int button, int  x, int y, t_env *env)
     return(0);
 }
 
+int    destroy(t_env *env)
+{
+    mlx_destroy_image(env->mlx, env->win.ptr);
+    exit(0);
+}
+
 int         ft_abs(int x)
 {
     if(x < 0)
@@ -40,9 +46,6 @@ void	   set_env(t_env *env)
 
     env->img.l = LARGEUR_IMG;
     env->img.h = HAUTEUR_IMG;
-    env->img.bpp = 16;
-    env->img.size_line = LARGEUR_IMG;
-    env->img.endian = 0;
 }
 
 t_coords    set_pixel(int x, int y, unsigned int color)
@@ -70,7 +73,7 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
     line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
 
     while(p1.x != p2.x && p1.y != p2.y){
-        mlx_pixel_put(env.mlx, env.win.ptr, p1.x, p1.y, BLANK);
+		put_pixel_img(&env, set_pixel(p1.x, p1.y, p1.color));
         err_tmp = line.err;
         if (err_tmp > -line.dx)
         {
@@ -85,11 +88,29 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
     }
 }
 
+void	projection(t_env *env)
+{
+	//X = x + cte * z
+	//Y = y + cte/2 * z
+	//avec cte, constante : 0.5~1
+
+	float X;
+	float Y;
+	float c;
+
+	c = 0.5;
+	X = env-> + c * z;
+	Y = env-> + c/2 + z;
+
+	draw_line(env, set_pixel(X, Y, BLANK), set_pixel(400, 400, BLANK));
+
+}
+
 size_t  ft_arrlen(char **arr)
 {
     size_t  i;
 
-    i = 0
+    i = 0;
     while (arr[i])
         ++i;
     return (i);
@@ -97,84 +118,142 @@ size_t  ft_arrlen(char **arr)
 
 void	ft_lstadd_end(t_list **alst, t_list *new)
 {
-	while ()
-	{
+	t_list *tmp;
 
+	if (alst && new)
+	{
+		if (!*alst)
+			*alst = new;
+		else
+		{
+			tmp = *alst;
+			while (tmp->next != NULL)
+				tmp = tmp->next;
+			//new->next = NULL;
+			tmp->next = new;
+		}
 	}
 }
 
-t_list	*parse(t_env env, char *buff) //verif a faire pour map non valide
+t_list	*parse(char *buff) //verif a faire pour map non valide
 {
 	t_list		*list;
     char        *line;
     char        **grid;
     int         *tmp;
     size_t		len;
+	int			fd;
 	int			i;
 
 	list = NULL;
     fd = open(buff, O_RDONLY);
     while (get_next_line(fd, &line) > 0)
     {
-        if ((grid = ft_strsplit(line, ' ')))
-        {
+		grid = ft_strsplit(line, ' ');
+        //if ((grid = ft_strsplit(line, ' ')))
+        //{
 			len = ft_arrlen(grid);
-            tmp = ft_memmalloc(sizeof(int) * len);
+            tmp = ft_memalloc(sizeof(int) * len);
 			i = 0;
 			while (grid[i])
 			{
 				tmp[i] = ft_atoi(grid[i]);
+				printf("\ntmp[%d] = %d", i, tmp[i]);
 				++i;
 			}
+			printf("\n-------------------------");
 			ft_lstadd_end(&list, ft_lstnew(tmp, len * sizeof(int)));
-			ft_memdel(&tmp);
-        }
+			ft_memdel((void*)&tmp);
+        //}
         ft_strdel(&line);
-		close(fd);
     }
+	close(fd);
 	return (list); //a verifier pour une map full vide
 }
 
-int         main(int argc, *argv[])
+void	put_pixel_img(t_env *env, t_coords p)
+{
+	int		r;
+	int		g;
+	int		b;
+
+	r = (p.color & 0xFF0000) >> 16;
+	g = (p.color & 0xFF00) >> 8;
+	b = (p.color & 0xFF);
+	if (p.y >= 0 && p.x >= 0 && p.y < HAUTEUR_IMG && p.x < LARGEUR_IMG)
+	{
+		env->img.data[(p.y * env->img.size_line) +
+			((env->img.bpp / 8) * p.x) + 2] = r;
+		env->img.data[(p.y * env->img.size_line) +
+			((env->img.bpp / 8) * p.x) + 1] = g;
+		env->img.data[(p.y * env->img.size_line) +
+			((env->img.bpp / 8) * p.x)] = b;
+	}
+}
+
+void		printMap(t_list *map)
+{
+		t_list	*curr;
+		int		i;
+		int		tmp;
+
+		i = 0;
+		tmp = 0;
+		curr = map;
+		printf("\nprintmap begin\n");
+		while (curr->next)
+		{
+			printf("\ntest passage boucle curr : nb %d\n", tmp);
+			while (i < 20) //recup la taille de arrlen
+			{
+				printf("i = %d, val[%d]\n", i, (int)curr->content);
+				i++;
+			}
+			i = 0;
+			tmp++;
+			curr = curr->next;
+		}
+}
+
+int         main(int argc, char *argv[])
 {
     t_env       env;
+	t_list		*map;
 
     if(argc != 2)
     {
         return (0);
-        write(1, "usage: ./FdF File", 17)
+        write(1, "usage: ./FdF File", 17);
     }
 
     set_env(&env);
 
     env.mlx = mlx_init();
     env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
-    //(unsigned int) =  mlx_get_color_value(env.mlx, env.color);
 
-    if((parse(argv[1]))
+    if((map = parse(argv[1])))
     {
         write(1, "map invalide", 12);
-        return (0);
+        //return (0);
     }
 
-    draw_line(env, set_pixel(0, 0, BLANK), set_pixel(400, 400, BLANK));
-    draw_line(env, set_pixel(0, 200, BLANK), set_pixel(340, 0, BLANK));
+	printMap(map);
 
-    //creer une image:
     env.img.ptr = mlx_new_image(env.mlx, env.img.l, env.img.h);
-    //la remplir:
     env.img.data = mlx_get_data_addr(env.img.ptr, &env.img.bpp,
     &env.img.size_line, &env.img.endian);
-    //l'afficher:
-    mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr,
-        0, 0);
 
-    //mlx management event
-    //mlx_hook(env.win.ptr, event, mask, ptr_fcnt, &event) //need to include X.h
-    mlx_key_hook(env.win.ptr, manage_key, &env);
+	//draw_line(env, set_pixel(0, 0, GREEN), set_pixel(400, 400, BLANK));
+	//draw_line(env, set_pixel(200, 0, RED), set_pixel(211, 400, BLANK)); //probleme avec 200
+
+	projection(&env);
+
+    mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr, 0, 0);
+
+	mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
+	//mlx_hook(env.win.ptr, , , &env);
+	mlx_key_hook(env.win.ptr, manage_key, &env);
     mlx_mouse_hook(env.win.ptr, manage_mouse, &env);
-
-    //mlx boucle d'execution
     mlx_loop(env.mlx);
     return (0);
 }
