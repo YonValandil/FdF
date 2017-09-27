@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/26 08:51:14 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/09/27 20:34:13 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,29 +88,54 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
     }
 }
 
-void	projection(t_env *env)
+void	projection(t_env env, t_list *map)
 {
-	//X = x + cte * z
-	//Y = y + cte/2 * z
-	//avec cte, constante : 0.5~1
+	int 		c;
+	int			i;
+	int 		line;
+	t_coords	p;
+	t_coords	p2;
+	t_list		*curr;
 
-	float X;
-	float Y;
-	float c;
-
-	c = 0.5;
-	X = env-> + c * z;
-	Y = env-> + c/2 + z;
-
-	draw_line(env, set_pixel(X, Y, BLANK), set_pixel(400, 400, BLANK));
-
+	c = 1;
+	p.x = 100;
+	p.y = 100;
+	p.color = GREEN;
+	p2.x = p.x;
+	p2.y = p.y;
+	p2.color = p.color;
+	i = 0;
+	line = 0;
+	curr = map;
+	while (curr->next)
+	{
+		p.x = 0;
+		p2.x = 0;
+		while (i < 20) //have to use arrlen
+		{
+			//X = (((int*)(curr->content))[i] * cos(M_PI/6) - ((int*)(curr->content))[i] * sin(M_PI/3)) + c;
+			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
+			p.x +=  20;
+			p.y = line * 20;
+			p.color = GREEN;
+			p2.x = p.x + 20 + 1;
+			p2.y = p.y + 1;
+			p2.color = GREEN;
+			put_pixel_img(&env, p);
+			draw_line(env, p, p2);
+			++i;
+		}
+		++line;
+		i = 0;
+		curr = curr->next;
+	}
 }
 
 size_t  ft_arrlen(char **arr)
 {
     size_t  i;
-
     i = 0;
+
     while (arr[i])
         ++i;
     return (i);
@@ -129,7 +154,6 @@ void	ft_lstadd_end(t_list **alst, t_list *new)
 			tmp = *alst;
 			while (tmp->next != NULL)
 				tmp = tmp->next;
-			//new->next = NULL;
 			tmp->next = new;
 		}
 	}
@@ -144,15 +168,15 @@ t_list	*parse(char *buff) //verif a faire pour map non valide
     size_t		len;
 	int			fd;
 	int			i;
+	int			tmpaff;
 
 	list = NULL;
+	tmpaff = 0;
     fd = open(buff, O_RDONLY);
     while (get_next_line(fd, &line) > 0)
     {
 		grid = ft_strsplit(line, ' ');
-        //if ((grid = ft_strsplit(line, ' ')))
-        //{
-			len = ft_arrlen(grid);
+			len = ft_arrlen((char**)grid);
             tmp = ft_memalloc(sizeof(int) * len);
 			i = 0;
 			while (grid[i])
@@ -161,10 +185,10 @@ t_list	*parse(char *buff) //verif a faire pour map non valide
 				printf("\ntmp[%d] = %d", i, tmp[i]);
 				++i;
 			}
-			printf("\n-------------------------");
+			tmpaff++;
+			printf("\n-------------------------%d", tmpaff);
 			ft_lstadd_end(&list, ft_lstnew(tmp, len * sizeof(int)));
 			ft_memdel((void*)&tmp);
-        //}
         ft_strdel(&line);
     }
 	close(fd);
@@ -193,20 +217,23 @@ void	put_pixel_img(t_env *env, t_coords p)
 
 void		printMap(t_list *map)
 {
-		t_list	*curr;
-		int		i;
-		int		tmp;
+		t_list		*curr;
+		size_t		i;
+		int			tmp;
+		size_t		len;
 
 		i = 0;
 		tmp = 0;
 		curr = map;
+		len = ft_arrlen(((char**)&(curr->content)));
 		printf("\nprintmap begin\n");
-		while (curr->next)
+		printf("\nprintmap len = %zu\n", len);
+		while (curr->next != NULL)
 		{
 			printf("\ntest passage boucle curr : nb %d\n", tmp);
-			while (i < 20) //recup la taille de arrlen
+			while (i < len) //recup la taille de arrlen
 			{
-				printf("i = %d, val[%d]\n", i, (int)curr->content);
+				printf("i = %zu, val[%d]\n", i, ((int*)(curr->content))[i]);
 				i++;
 			}
 			i = 0;
@@ -246,7 +273,7 @@ int         main(int argc, char *argv[])
 	//draw_line(env, set_pixel(0, 0, GREEN), set_pixel(400, 400, BLANK));
 	//draw_line(env, set_pixel(200, 0, RED), set_pixel(211, 400, BLANK)); //probleme avec 200
 
-	projection(&env);
+	projection(env, map);
 
     mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr, 0, 0);
 
