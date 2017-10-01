@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/01 23:19:07 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/10/02 01:09:02 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,35 +59,6 @@ t_coords    set_pixel(int x, int y, unsigned int color)
     return (p);
 }
 
-/*void	  draw_line(t_env env, t_coords p1, t_coords p2)
-{
-    t_line line;
-    int incr_x;
-    int incr_y;
-    int err_tmp;
-
-    line.dx = ft_abs(p2.x - p1.x);
-    line.dy = ft_abs(p2.y - p1.y);
-    incr_x = (p1.x < p2.x) ? 1 : -1;
-    incr_y = (p1.y < p2.y) ? 1 : -1;
-    line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
-
-    while(p1.x != p2.x && p1.y != p2.y){
-		put_pixel_img(&env, set_pixel(p1.x, p1.y, p1.color));
-        err_tmp = line.err;
-        if (err_tmp > -line.dx)
-        {
-            line.err -= line.dy;
-            p1.x += incr_x;
-        }
-        if (err_tmp < line.dy)
-        {
-            line.err += line.dx;
-            p1.y += incr_y;
-        }
-    }
-}*/
-
 void draw_line(t_env env, t_coords p0, t_coords p1)
 {
 	t_line	line;
@@ -126,45 +97,47 @@ void	projection(t_env env, t_list *map)
 	int			i;
 	int 		line;
 	int			decX;
+	int			tmpDecX;
 	t_coords	p;
 	t_coords	p2;
 	t_coords	p3;
 	t_list		*curr;
 
 	cte = 23;
-	i = 0;
-	decX = 15;
+	decX = 0;
+	tmpDecX = 15;
 	line = (HAUTEUR_IMG / 100) + 3;
 	curr = map;
 	while (curr)
 	{
+		i = 0;
 		p.x = (LARGEUR_IMG / 9) + decX;
-		while (i < 20) //have to use arrlen
+		while (i <= 19) //have to use arrlen
 		{
 			//curr->next->content[i]
 			//X = (((int*)(curr->content))[i] * cos(M_PI/6) - ((int*)(curr->content))[i] * sin(M_PI/3)) + c;
 			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
 
 			p.x += cte;
-			p.y = line * cte;
+			p.y = line * cte - (5 * ((int*)(curr->content))[i]);
 			p.color = GREEN;
 
 			p2.x = p.x + cte;
 			p2.y = p.y;
 			p2.color = p.color;
 
-			p3.x = p.x + decX;
+			p3.x = p.x + tmpDecX;
 			p3.y = p.y + cte;
 			p3.color = p.color;
 
-			draw_line(env, p, p2);
+			if (i != 19)
+				draw_line(env, p, p2);
 			if (curr->next !=  NULL)
 				draw_line(env, p, p3);
 			++i;
 		}
 		++line;
 		decX += 15;
-		i = 0;
 		curr = curr->next;
 	}
 }
