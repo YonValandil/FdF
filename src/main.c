@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/27 20:34:13 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/10/01 22:25:51 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	   set_env(t_env *env)
 {
     env->win.l = LARGEUR;
     env->win.h = HAUTEUR;
-    env->win.title = ft_strdup("mlx 42");
+    env->win.title = ft_strdup("mlx 42 FdF");
 
     env->img.l = LARGEUR_IMG;
     env->img.h = HAUTEUR_IMG;
@@ -59,7 +59,7 @@ t_coords    set_pixel(int x, int y, unsigned int color)
     return (p);
 }
 
-void	  draw_line(t_env env, t_coords p1, t_coords p2)
+/*void	  draw_line(t_env env, t_coords p1, t_coords p2)
 {
     t_line line;
     int incr_x;
@@ -86,43 +86,77 @@ void	  draw_line(t_env env, t_coords p1, t_coords p2)
             p1.y += incr_y;
         }
     }
+}*/
+
+void draw_line(t_env env, t_coords p0, t_coords p1)
+{
+	t_line	line;
+    int		incr_x;
+    int		incr_y;
+    int		err_tmp;
+
+	line.dx = ft_abs(p1.x - p0.x);
+	incr_x = p0.x < p1.x ? 1 : -1;
+	line.dy = ft_abs(p1.y - p0.y);
+	incr_y = p0.y < p1.y ? 1 : -1;
+	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
+
+	while(1)
+	{
+		put_pixel_img(&env, set_pixel(p0.x, p0.y, p0.color));
+    	if (p0.x==p1.x && p0.y==p1.y)
+			break;
+    	err_tmp = line.err;
+    	if (err_tmp >- line.dx)
+		{
+			line.err -= line.dy;
+			p0.x += incr_x;
+		}
+    	if (err_tmp < line.dy)
+		{
+			line.err += line.dx;
+			p0.y += incr_y;
+		}
+	}
 }
 
 void	projection(t_env env, t_list *map)
 {
-	int 		c;
+	int 		cte;
 	int			i;
 	int 		line;
 	t_coords	p;
 	t_coords	p2;
+	t_coords	p3;
 	t_list		*curr;
 
-	c = 1;
-	p.x = 100;
-	p.y = 100;
-	p.color = GREEN;
-	p2.x = p.x;
-	p2.y = p.y;
-	p2.color = p.color;
+	cte = 23;
 	i = 0;
-	line = 0;
+	line = (HAUTEUR_IMG / 100) + 3;
 	curr = map;
-	while (curr->next)
+	while (curr)
 	{
-		p.x = 0;
-		p2.x = 0;
+		p.x = (LARGEUR_IMG / 8);
 		while (i < 20) //have to use arrlen
 		{
+			//curr->next->content[i]
 			//X = (((int*)(curr->content))[i] * cos(M_PI/6) - ((int*)(curr->content))[i] * sin(M_PI/3)) + c;
 			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
-			p.x +=  20;
-			p.y = line * 20;
+
+			p.x +=  cte;
+			p.y = line * cte;
 			p.color = GREEN;
-			p2.x = p.x + 20 + 1;
-			p2.y = p.y + 1;
-			p2.color = GREEN;
-			put_pixel_img(&env, p);
+
+			p2.x = p.x + cte;
+			p2.y = p.y;
+			p2.color = p.color;
+
+			p3.x = p.x;
+			p3.y = p.y + cte;
+			p3.color = p.color;
+
 			draw_line(env, p, p2);
+			draw_line(env, p, p3);
 			++i;
 		}
 		++line;
@@ -228,7 +262,7 @@ void		printMap(t_list *map)
 		len = ft_arrlen(((char**)&(curr->content)));
 		printf("\nprintmap begin\n");
 		printf("\nprintmap len = %zu\n", len);
-		while (curr->next != NULL)
+		while (curr != NULL)
 		{
 			printf("\ntest passage boucle curr : nb %d\n", tmp);
 			while (i < len) //recup la taille de arrlen
@@ -270,8 +304,9 @@ int         main(int argc, char *argv[])
     env.img.data = mlx_get_data_addr(env.img.ptr, &env.img.bpp,
     &env.img.size_line, &env.img.endian);
 
-	//draw_line(env, set_pixel(0, 0, GREEN), set_pixel(400, 400, BLANK));
-	//draw_line(env, set_pixel(200, 0, RED), set_pixel(211, 400, BLANK)); //probleme avec 200
+	draw_line(env, set_pixel(0, 0, RED), set_pixel(400, 400, BLANK));
+	draw_line(env, set_pixel(201, 0, RED), set_pixel(200, 400, BLANK)); //probleme avec vertical
+	draw_line(env, set_pixel(20, 201, RED), set_pixel(200, 200, BLANK)); //probleme avec horizontal
 
 	projection(env, map);
 
