@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/01 19:09:18 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/10/01 23:04:17 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,11 @@
 # define BLUE			0x000000FF
 # define GREEN			0x0000FF00
 # define RED			0x00FF0000
-# define HAUTEUR		600
-# define LARGEUR		600
-# define HAUTEUR_IMG	600
-# define LARGEUR_IMG	600
 
-/*enum e_screen
-{
-	LARGEUR;
-	LONGUEUR;
-};*/
+# define HAUTEUR		600
+# define LARGEUR		800
+# define HAUTEUR_IMG	600
+# define LARGEUR_IMG	800
 
 typedef struct		s_coords
 {

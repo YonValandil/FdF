@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/01 22:25:51 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/10/01 23:19:07 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	projection(t_env env, t_list *map)
 	int 		cte;
 	int			i;
 	int 		line;
+	int			decX;
 	t_coords	p;
 	t_coords	p2;
 	t_coords	p3;
@@ -132,18 +133,19 @@ void	projection(t_env env, t_list *map)
 
 	cte = 23;
 	i = 0;
+	decX = 15;
 	line = (HAUTEUR_IMG / 100) + 3;
 	curr = map;
 	while (curr)
 	{
-		p.x = (LARGEUR_IMG / 8);
+		p.x = (LARGEUR_IMG / 9) + decX;
 		while (i < 20) //have to use arrlen
 		{
 			//curr->next->content[i]
 			//X = (((int*)(curr->content))[i] * cos(M_PI/6) - ((int*)(curr->content))[i] * sin(M_PI/3)) + c;
 			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
 
-			p.x +=  cte;
+			p.x += cte;
 			p.y = line * cte;
 			p.color = GREEN;
 
@@ -151,15 +153,17 @@ void	projection(t_env env, t_list *map)
 			p2.y = p.y;
 			p2.color = p.color;
 
-			p3.x = p.x;
+			p3.x = p.x + decX;
 			p3.y = p.y + cte;
 			p3.color = p.color;
 
 			draw_line(env, p, p2);
-			draw_line(env, p, p3);
+			if (curr->next !=  NULL)
+				draw_line(env, p, p3);
 			++i;
 		}
 		++line;
+		decX += 15;
 		i = 0;
 		curr = curr->next;
 	}
