@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/02 01:09:02 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/10/02 06:37:43 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,11 @@ void	projection(t_env env, t_list *map)
 			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
 
 			p.x += cte;
-			p.y = line * cte - (5 * ((int*)(curr->content))[i]);
+			p.y = line * cte;
 			p.color = GREEN;
 
 			p2.x = p.x + cte;
-			p2.y = p.y;
+			p2.y = p.y - (5 * ((int*)(curr->content))[i]);
 			p2.color = p.color;
 
 			p3.x = p.x + tmpDecX;
