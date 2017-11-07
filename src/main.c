@@ -12,24 +12,32 @@
 
 #include "FdF.h"
 
-int         manage_key(int keycode, t_env *env)
+int			manage_key(int keycode, t_env *env)
 {
     printf("keycode = %d\ntitle window = %s\n", keycode, env->win.title);
     return (0);
 }
 
-int       manage_mouse(int button, int  x, int y, t_env *env)
+int			manage_mouse(int button, int  x, int y, t_env *env)
 {
     printf("\nbutton : %d\ncoords: %d;%d\ntitle : %s\n",
         button, x, y, env->win.title);
     return(0);
 }
 
-int    destroy(t_env *env)
+int			destroy(t_env *env)
 {
     mlx_destroy_image(env->mlx, env->win.ptr);
     exit(0);
 }
+
+/*int			controller(int keycode, void *data)
+{
+	t_env *env;
+
+	env = data;
+
+}*/
 
 int         ft_abs(int x)
 {
@@ -151,7 +159,7 @@ void	projection(t_env env, t_list *map)
 	t_list		*curr;
 
 	i = -1;
-	curr = map; //nbr de lignes
+	curr = map;
 	//len = ft_arrlen(((char**)&(curr->content))); //nbr d'elements par lignes
 	len = 19;
 	while (curr)
@@ -260,7 +268,7 @@ t_list	*parse(char *buff) //verif a faire pour map non valide
 		i = 0;
 		while (grid[i])
 		{
-			tmp[i] = ft_atoi(grid[i]);
+			tmp[i] = ft_atoi(grid[len - 1 - i]);
 			printf("\ntmp[%d] = %d", i, tmp[i]);
 			++i;
 		}
@@ -354,7 +362,7 @@ int         main(int argc, char *argv[])
 
     mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr, 0, 0);
 	mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
-	//mlx_hook(env.win.ptr, , , &env);
+	//mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
 	mlx_key_hook(env.win.ptr, manage_key, &env);
     mlx_mouse_hook(env.win.ptr, manage_mouse, &env);
     mlx_loop(env.mlx);
