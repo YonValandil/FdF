@@ -91,7 +91,7 @@ void draw_line(t_env env, t_coords p0, t_coords p1)
 	}
 }
 
-void	projection(t_env env, t_list *map)
+/*void	projection(t_env env, t_list *map)
 {
 	int 		cte;
 	int			i;
@@ -140,15 +140,79 @@ void	projection(t_env env, t_list *map)
 		decX += 15;
 		curr = curr->next;
 	}
+}*/
+
+void	projection(t_env env, t_list *map)
+{
+	int			i;
+	int			j;
+	int			len;
+	t_coords	z;
+	t_list		*curr;
+
+	i = -1;
+	curr = map; //nbr de lignes
+	//len = ft_arrlen(((char**)&(curr->content))); //nbr d'elements par lignes
+	len = 19;
+	while (curr)
+	{
+		++i;
+		j = -1;
+		while (++j < len)
+		{
+			if (curr->next != NULL)
+			{
+				z = set_pixel(((int*)(curr->content))[j],
+					((int*)(curr->next->content))[j], BLUE);
+				draw_map_iso(env, set_pixel(i, j, BLUE),
+					set_pixel(i + 1, j, BLUE), z);
+			}
+			if (j < len - 1)
+			{
+				z = set_pixel(((int*)(curr->content))[j],
+					((int*)(curr->content))[j + 1], BLUE);
+				draw_map_iso(env, set_pixel(i, j, BLUE),
+					set_pixel(i, j + 1, BLUE), z);
+			}
+		}
+		curr = curr->next;
+	}
 }
 
-size_t  ft_arrlen(char **arr)
+void	draw_map_iso(t_env env, t_coords p1, t_coords p2, t_coords z)
+{
+	int			decX;
+	int			decY;
+	t_coords	a;
+	t_coords	b;
+
+	decX = (LARGEUR_IMG / 2) + 140;
+	decY = 100;
+
+	a.x = (p1.x - p1.y) * 32 + decX/* * env.scale*/;
+	a.y = (p1.y + p1.x) * 16 + decY/* * env.scale*/;
+	a.color = p1.color;
+	b.x = (p2.x - p2.y) * 32 + decX/* * env.scale*/;
+	b.y = (p2.y + p2.x) * 16 + decY/* * env.scale*/;
+	b.color = p2.color;
+
+	a.y -= z.x * 5;
+	b.y -= z.y * 5;
+
+
+	draw_line(env, a, b);
+}
+
+size_t  ft_arrlen(void **arr)
 {
     size_t  i;
     i = 0;
 
-    while (arr[i])
+    while ((unsigned char*)arr[i])
+	{
+		//printf("\nval arr = %s, pour i = %zu\n", (unsigned char*)arr[i], i);
         ++i;
+	}
     return (i);
 }
 
@@ -187,19 +251,24 @@ t_list	*parse(char *buff) //verif a faire pour map non valide
     while (get_next_line(fd, &line) > 0)
     {
 		grid = ft_strsplit(line, ' ');
-			len = ft_arrlen((char**)grid);
-            tmp = ft_memalloc(sizeof(int) * len);
-			i = 0;
-			while (grid[i])
-			{
-				tmp[i] = ft_atoi(grid[i]);
-				printf("\ntmp[%d] = %d", i, tmp[i]);
-				++i;
-			}
-			tmpaff++;
-			printf("\n-------------------------%d", tmpaff);
-			ft_lstadd_end(&list, ft_lstnew(tmp, len * sizeof(int)));
-			ft_memdel((void*)&tmp);
+
+		//len = ft_arrlen((char**)grid);
+		len = ft_arrlen((void**)grid);
+		printf("\narrlen parse = %zu\n", len);
+
+        tmp = ft_memalloc(sizeof(int) * len);
+		i = 0;
+		while (grid[i])
+		{
+			tmp[i] = ft_atoi(grid[i]);
+			printf("\ntmp[%d] = %d", i, tmp[i]);
+			++i;
+		}
+		tmpaff++;
+		printf("\n-------------------------%d", tmpaff);
+
+		ft_lstadd_end(&list, ft_lstnew(tmp, len * sizeof(int)));
+		ft_memdel((void*)&tmp);
         ft_strdel(&line);
     }
 	close(fd);
@@ -236,13 +305,14 @@ void		printMap(t_list *map)
 		i = 0;
 		tmp = 0;
 		curr = map;
-		len = ft_arrlen(((char**)&(curr->content)));
+		//len = ft_arrlen(((void**)&(curr->content)));
+		len = 19;
 		printf("\nprintmap begin\n");
 		printf("\nprintmap len = %zu\n", len);
 		while (curr != NULL)
 		{
 			printf("\ntest passage boucle curr : nb %d\n", tmp);
-			while (i < len) //recup la taille de arrlen
+			while (i < len)
 			{
 				printf("i = %zu, val[%d]\n", i, ((int*)(curr->content))[i]);
 				i++;
@@ -265,7 +335,6 @@ int         main(int argc, char *argv[])
     }
 
     set_env(&env);
-
     env.mlx = mlx_init();
     env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
 
@@ -281,14 +350,9 @@ int         main(int argc, char *argv[])
     env.img.data = mlx_get_data_addr(env.img.ptr, &env.img.bpp,
     &env.img.size_line, &env.img.endian);
 
-	draw_line(env, set_pixel(0, 0, RED), set_pixel(400, 400, BLANK));
-	draw_line(env, set_pixel(201, 0, RED), set_pixel(200, 400, BLANK)); //probleme avec vertical
-	draw_line(env, set_pixel(20, 201, RED), set_pixel(200, 200, BLANK)); //probleme avec horizontal
-
 	projection(env, map);
 
     mlx_put_image_to_window(env.mlx, env.win.ptr, env.img.ptr, 0, 0);
-
 	mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
 	//mlx_hook(env.win.ptr, , , &env);
 	mlx_key_hook(env.win.ptr, manage_key, &env);
