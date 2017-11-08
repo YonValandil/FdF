@@ -19,13 +19,69 @@ int			manage_mouse(int button, int  x, int y, t_env *env)
     return(0);
 }
 
-void 		refresh_img(t_env *env)
+void 		height(int keycode, t_env *env)
 {
-	//mlx_destroy_image(env->mlx, env->img.ptr);
-	mlx_clear_window(env->mlx, env->win.ptr);
-	//set_img(env);
+	if (keycode == UP_Z_M || keycode == UP_Z_L)
+	{
+		env->height += 1;
+		printf("\ndown_z\n");
+	}
+	if (keycode == DOWN_Z_M || keycode == DOWN_Z_L)
+	{
+		env->height -= 1;
+		printf("\nup_z\n");
+	}
 }
 
+void 		scale(int keycode, t_env *env)
+{
+	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L)
+	{
+		env->scalex += 2;
+		env->scaley += 1;
+		printf("\nzoom up\n");
+	}
+	if (keycode == ZOOM_OUT_M|| keycode == ZOOM_OUT_L)
+	{
+		env->scalex -= 2;
+		env->scaley -= 1;
+		printf("\nzoom down\n");
+	}
+}
+
+void 		translate(int keycode, t_env *env)
+{
+	if (keycode == UP_M || keycode == UP_L)
+	{
+		printf("\nup\n");
+		env->posy -= 7;
+	}
+	if (keycode == DOWN_M || keycode == DOWN_L)
+	{
+		printf("\ndown\n");
+		env->posy += 7;
+	}
+	if (keycode == LEFT_M || keycode == LEFT_L)
+	{
+		printf("\nleft\n");
+		env->posx -=7;
+	}
+	if (keycode == RIGHT_M || keycode == RIGHT_L)
+	{
+		printf("\nright\n");
+		env->posx +=7;
+	}
+}
+
+void 		reset(t_env *env)
+{
+	printf("\nreset - spacebar\n");
+	env->height = 5;
+	env->scalex = 30;
+	env->scaley = 15;
+	env->posx = (LARGEUR_IMG / 2) + 125;
+	env->posy = 100;
+}
 int			destroy(t_env *env)
 {
     mlx_destroy_image(env->mlx, env->win.ptr);
@@ -37,49 +93,23 @@ int			controller(int keycode, void *param)
 	t_env *env;
 
 	env = (t_env*)param;
-	//refresh_img(env);
     printf("keycode = %d\n\n", keycode);
 
 	if (keycode == ESCAPE_M || keycode == ESCAPE_L)
 		destroy(env); //segfault
-	if (keycode == UP_M || keycode == UP_L)
-	{
-		printf("\nup\n");
-	}
-	if (keycode == DOWN_M || keycode == DOWN_L)
-	{
-		printf("\ndown\n");
-	}
-	if (keycode == LEFT_M || keycode == LEFT_L)
-	{
-		printf("\nleft\n");
-	}
-	if (keycode == RIGHT_M || keycode == RIGHT_L)
-	{
-		printf("\nright\n");
-	}
-	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L)
-	{
-		printf("\nzoom_in -> z\n");
-	}
-	if (keycode == ZOOM_OUT_M || keycode == ZOOM_OUT_L)
-	{
-		printf("\nzoom_out -> s\n");
-	}
-	if (keycode == UP_Z_M || keycode == UP_Z_L)
-	{
-		printf("\nup_z -> a\n");
-	}
-	if (keycode == DOWN_Z_M || keycode == DOWN_Z_L)
-	{
-		printf("\ndown_z -> q\n");
-	}
+	if (keycode == UP_M || keycode == UP_L || keycode == DOWN_M ||
+		keycode == DOWN_L || keycode == LEFT_M || keycode == LEFT_L ||
+		keycode == RIGHT_M || keycode == RIGHT_L)
+		translate(keycode, env);
+	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L ||
+		keycode == ZOOM_OUT_M || keycode == ZOOM_OUT_L)
+		scale(keycode, env);
+	if (keycode == UP_Z_M || keycode == UP_Z_L ||
+		keycode == DOWN_Z_M || keycode == DOWN_Z_L)
+		height(keycode, env);
 	if (keycode == RESET_M || keycode == RESET_L)
-	{
-		printf("\nreset - spacebar\n");
-	}
-	//refresh_img(env);
-	//projection(env);
+		reset(env);
+	set_img(env);
 	return (0);
 }
 
@@ -209,24 +239,18 @@ void	projection(t_env *env)
 
 void	draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z)
 {
-	int			decX;
-	int			decY;
 	t_coords	a;
 	t_coords	b;
 
-	decX = (LARGEUR_IMG / 2) + 140;
-	decY = 100;
-
-	a.x = (p1.x - p1.y) * 32 + decX/* * env.scale*/;
-	a.y = (p1.y + p1.x) * 16 + decY/* * env.scale*/;
+	a.x = (p1.x - p1.y) * env->scalex + env->posx;
+	a.y = (p1.y + p1.x) * env->scaley + env->posy;
 	a.color = p1.color;
-	b.x = (p2.x - p2.y) * 32 + decX/* * env.scale*/;
-	b.y = (p2.y + p2.x) * 16 + decY/* * env.scale*/;
+	b.x = (p2.x - p2.y) * env->scalex + env->posx;
+	b.y = (p2.y + p2.x) * env->scaley + env->posy;
 	b.color = p2.color;
 
-	a.y -= z.x * 5;
-	b.y -= z.y * 5;
-
+	a.y -= z.x * env->height;
+	b.y -= z.y * env->height;
 
 	draw_line(env, a, b);
 }
@@ -364,8 +388,8 @@ void 		set_img(t_env *env)
     mlx_put_image_to_window(env->mlx, env->win.ptr, env->img.ptr, 0, 0);
 	mlx_string_put(env->mlx, env->win.ptr, 20, 20, GREEN, "press ESC: QUIT");
 	mlx_string_put(env->mlx, env->win.ptr, 20, 40, GREEN, "press SPACE: RESET");
-	mlx_string_put(env->mlx, env->win.ptr, 220, 20, GREEN, "press Z: ZOOM");
-	mlx_string_put(env->mlx, env->win.ptr, 220, 40, GREEN, "press S: UNZOOM");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 20, GREEN, "press Z: ZOOM UP");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 40, GREEN, "press S: ZOOM DOWN");
 	mlx_string_put(env->mlx, env->win.ptr, 420, 20, GREEN, "press A: UP_Z");
 	mlx_string_put(env->mlx, env->win.ptr, 420, 40, GREEN, "press Q: DOWN_Z");
 	mlx_string_put(env->mlx, env->win.ptr, 620, 20, GREEN, "USE: ARROWS for MOVE");
@@ -383,6 +407,11 @@ void	   set_env(t_env *env)
 
 	env->map = NULL;
 	env->nbr_line = 0;
+	env->height = 5;
+	env->scalex = 30;
+	env->scaley = 15;
+	env->posx = (LARGEUR_IMG / 2) + 125;
+	env->posy = 100;
 }
 
 int         main(int argc, char *argv[])

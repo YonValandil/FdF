@@ -24,10 +24,10 @@
 # define GREEN			0x0000FF00
 # define RED			0x00FF0000
 
-# define HAUTEUR		700
-# define LARGEUR		950
-# define HAUTEUR_IMG	700
-# define LARGEUR_IMG	950
+# define HAUTEUR		600
+# define LARGEUR		910
+# define HAUTEUR_IMG	600
+# define LARGEUR_IMG	910
 
 # define UP_M			126
 # define UP_L			65362
@@ -90,6 +90,11 @@ typedef struct		s_env
 {
 	void			*mlx;
 	size_t			nbr_line;
+	int				height;
+	int				scalex;
+	int				scaley;
+	int				posx;
+	int				posy;
 	struct s_img	img;
     struct s_win	win;
 	struct s_list	*map;
@@ -107,7 +112,6 @@ t_coords 	set_pixel(int x, int y, unsigned int color);
 void		draw_line(t_env *env, t_coords p1, t_coords p2);
 void 		draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z);
 int			controller(int keycode, void *param);
-void 		refresh_img(t_env *env);
 int			manage_key(int keycode, t_env *env);
 int			manage_mouse(int button, int x, int y, t_env *env);
 
