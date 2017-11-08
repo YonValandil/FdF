@@ -12,21 +12,18 @@
 
 #include "FdF.h"
 
-/*int		manage_mouse(int button, int  x, int y, t_env *env)
+int			manage_mouse(int button, int  x, int y, t_env *env)
 {
     printf("\nbutton : %d\ncoords: %d;%d\ntitle : %s\n",
         button, x, y, env->win.title);
     return(0);
-}*/
+}
 
 void 		refresh_img(t_env *env)
 {
 	//mlx_destroy_image(env->mlx, env->img.ptr);
-	//env->img.ptr = mlx_new_image(env->mlx, env->img.l, env->img.h);
-	//env->img.data = mlx_get_data_addr(env->img.ptr, &env->img.bpp,
-	//		&env->img.size_line, &env->img.endian);
-
-	set_img(env);
+	mlx_clear_window(env->mlx, env->win.ptr);
+	//set_img(env);
 }
 
 int			destroy(t_env *env)
@@ -35,23 +32,53 @@ int			destroy(t_env *env)
     exit(0);
 }
 
-int			controller(void *param, int keycode)
+int			controller(int keycode, void *param)
 {
 	t_env *env;
 
-	env = param;
+	env = (t_env*)param;
 	//refresh_img(env);
     printf("keycode = %d\n\n", keycode);
 
-	if (keycode == 65307)
+	if (keycode == ESCAPE_M || keycode == ESCAPE_L)
+		destroy(env); //segfault
+	if (keycode == UP_M || keycode == UP_L)
 	{
-		destroy(env);
+		printf("\nup\n");
 	}
-	if (keycode == 65362)
+	if (keycode == DOWN_M || keycode == DOWN_L)
 	{
-		printf("\nfleche du haut\n");
+		printf("\ndown\n");
 	}
-	refresh_img(env);
+	if (keycode == LEFT_M || keycode == LEFT_L)
+	{
+		printf("\nleft\n");
+	}
+	if (keycode == RIGHT_M || keycode == RIGHT_L)
+	{
+		printf("\nright\n");
+	}
+	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L)
+	{
+		printf("\nzoom_in -> z\n");
+	}
+	if (keycode == ZOOM_OUT_M || keycode == ZOOM_OUT_L)
+	{
+		printf("\nzoom_out -> s\n");
+	}
+	if (keycode == UP_Z_M || keycode == UP_Z_L)
+	{
+		printf("\nup_z -> a\n");
+	}
+	if (keycode == DOWN_Z_M || keycode == DOWN_Z_L)
+	{
+		printf("\ndown_z -> q\n");
+	}
+	if (keycode == RESET_M || keycode == RESET_L)
+	{
+		printf("\nreset - spacebar\n");
+	}
+	//refresh_img(env);
 	//projection(env);
 	return (0);
 }
@@ -332,9 +359,17 @@ void 		set_img(t_env *env)
     env->img.ptr = mlx_new_image(env->mlx, env->img.l, env->img.h);
     env->img.data = mlx_get_data_addr(env->img.ptr, &env->img.bpp,
     	&env->img.size_line, &env->img.endian);
+	mlx_clear_window(env->mlx, env->win.ptr);
 	projection(env);
     mlx_put_image_to_window(env->mlx, env->win.ptr, env->img.ptr, 0, 0);
-
+	mlx_string_put(env->mlx, env->win.ptr, 20, 20, GREEN, "press ESC: QUIT");
+	mlx_string_put(env->mlx, env->win.ptr, 20, 40, GREEN, "press SPACE: RESET");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 20, GREEN, "press Z: ZOOM");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 40, GREEN, "press S: UNZOOM");
+	mlx_string_put(env->mlx, env->win.ptr, 420, 20, GREEN, "press A: UP_Z");
+	mlx_string_put(env->mlx, env->win.ptr, 420, 40, GREEN, "press Q: DOWN_Z");
+	mlx_string_put(env->mlx, env->win.ptr, 620, 20, GREEN, "USE: ARROWS for MOVE");
+	mlx_destroy_image(env->mlx, env->img.ptr);
 }
 
 void	   set_env(t_env *env)
@@ -375,7 +410,7 @@ int         main(int argc, char *argv[])
 
 	mlx_hook(env.win.ptr, 2, 3, controller, &env);
 	//mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
-    //mlx_mouse_hook(env.win.ptr, manage_mouse, &env);
+    mlx_mouse_hook(env.win.ptr, manage_mouse, &env);
     mlx_loop(env.mlx);
     return (0);
 }

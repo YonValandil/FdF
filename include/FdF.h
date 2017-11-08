@@ -29,6 +29,27 @@
 # define HAUTEUR_IMG	700
 # define LARGEUR_IMG	950
 
+# define UP_M			126
+# define UP_L			65362
+# define DOWN_M			125
+# define DOWN_L			65364
+# define LEFT_M			123
+# define LEFT_L			65361
+# define RIGHT_M		124
+# define RIGHT_L		65363
+# define ZOOM_IN_M		24
+# define ZOOM_IN_L		122
+# define ZOOM_OUT_M		27
+# define ZOOM_OUT_L		115
+# define UP_Z_M			116
+# define UP_Z_L			97
+# define DOWN_Z_M		121
+# define DOWN_Z_L		113
+# define ESCAPE_M		53
+# define ESCAPE_L		65307
+# define RESET_M		12
+# define RESET_L		32
+
 typedef struct		s_coords
 {
 	int				x;
@@ -85,7 +106,7 @@ void		put_pixel_img(t_env *env, t_coords p);
 t_coords 	set_pixel(int x, int y, unsigned int color);
 void		draw_line(t_env *env, t_coords p1, t_coords p2);
 void 		draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z);
-int			controller(void *param, int keycode);
+int			controller(int keycode, void *param);
 void 		refresh_img(t_env *env);
 int			manage_key(int keycode, t_env *env);
 int			manage_mouse(int button, int x, int y, t_env *env);
