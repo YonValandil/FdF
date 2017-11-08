@@ -112,7 +112,9 @@ t_coords 	set_pixel(int x, int y, unsigned int color);
 void		draw_line(t_env *env, t_coords p1, t_coords p2);
 void 		draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z);
 int			controller(int keycode, void *param);
-int			manage_key(int keycode, t_env *env);
-int			manage_mouse(int button, int x, int y, t_env *env);
+void 		height(int keycode, t_env *env);
+void 		scale(int keycode, t_env *env);
+void 		translate(int keycode, t_env *env);
+void 		reset(t_env *env);
 
 #endif

@@ -15,14 +15,15 @@
 int		ft_sqrt(int nb)
 {
 	int c;
-	int	r;
+	int r;
 
 	c = 1;
+	r = 1;
 	while (c <= nb)
 	{
 		r = ft_pow(c);
-		if (nb < r)
-			return (c - 1);
+		if (r == nb)
+			return (c);
 		c++;
 	}
 	return (0);
