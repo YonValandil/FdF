@@ -68,20 +68,25 @@ typedef struct		s_win
 typedef struct		s_env
 {
 	void			*mlx;
+	size_t			nbr_line;
 	struct s_img	img;
     struct s_win	win;
+	struct s_list	*map;
 }                   t_env;
 
 int			abs(int x);
 size_t		ft_arrlen(void **arr);
 void		ft_lstadd_end(t_list **alist, t_list *new);
 void		set_env(t_env *env);
-t_list		*parse(char *buff);
-void		projection(t_env env, t_list *map);
+void 		set_img(t_env *env);
+int			parse(t_env *env, char *buff);
+void		projection(t_env *env);//
 void		put_pixel_img(t_env *env, t_coords p);
 t_coords 	set_pixel(int x, int y, unsigned int color);
-void		draw_line(t_env env, t_coords p1, t_coords p2);
-void 		draw_map_iso(t_env env, t_coords p1, t_coords p2, t_coords z);
+void		draw_line(t_env *env, t_coords p1, t_coords p2);
+void 		draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z);
+int			controller(void *param, int keycode);
+void 		refresh_img(t_env *env);
 int			manage_key(int keycode, t_env *env);
 int			manage_mouse(int button, int x, int y, t_env *env);
 
