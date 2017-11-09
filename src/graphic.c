@@ -1,6 +1,17 @@
 #include "FdF.h"
 
-t_coords    set_pixel(int x, int y, unsigned int color)
+int			color(t_env *env, t_coords p0, t_coords p1, t_coords z)
+{
+	int val;
+	//int red;
+
+	//red = ;
+	val = p1.y - p0.y * env->height; //tmp pour les param non utilises (flag)
+	val = 0x0000FF - ft_abs((z.x * env->height));
+	return (val);
+}
+
+t_coords    set_pixel(int x, int y, int color)
 {
     t_coords p;
 
@@ -11,54 +22,51 @@ t_coords    set_pixel(int x, int y, unsigned int color)
     return (p);
 }
 
-void 		draw_line(t_env *env, t_coords p0, t_coords p1)
+void 		draw_line(t_env *env, t_coords p0, t_coords p1, t_coords z)
 {
 	t_line	line;
-    int		incr_x;
-    int		incr_y;
     int		err_tmp;
 
 	line.dx = ft_abs(p1.x - p0.x);
-	incr_x = p0.x < p1.x ? 1 : -1;
+	line.incr_x = p0.x < p1.x ? 1 : -1;
 	line.dy = ft_abs(p1.y - p0.y);
-	incr_y = p0.y < p1.y ? 1 : -1;
+	line.incr_y = p0.y < p1.y ? 1 : -1;
 	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
-
 	while(1)
 	{
-		put_pixel_img(env, set_pixel(p0.x, p0.y, p0.color));
+		put_pixel_img(env, set_pixel(p0.x, p0.y, color(env, p0, p1, z)));
     	if (p0.x==p1.x && p0.y==p1.y)
 			break;
     	err_tmp = line.err;
     	if (err_tmp >- line.dx)
 		{
 			line.err -= line.dy;
-			p0.x += incr_x;
+			p0.x += line.incr_x;
 		}
     	if (err_tmp < line.dy)
 		{
 			line.err += line.dx;
-			p0.y += incr_y;
+			p0.y += line.incr_y;
 		}
 	}
 }
 
-void	draw_map_iso(t_env *env, t_coords p1, t_coords p2, t_coords z)
+void	draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z)
 {
 	t_coords	a;
 	t_coords	b;
 
-	a.x = (p1.x - p1.y) * env->scalex + env->posx;
-	a.y = (p1.y + p1.x) * env->scaley + env->posy;
+	a.x = (p0.x - p0.y) * env->scalex + env->posx;
+	a.y = (p0.y + p0.x) * env->scaley + env->posy;
 	a.color = p1.color;
-	b.x = (p2.x - p2.y) * env->scalex + env->posx;
-	b.y = (p2.y + p2.x) * env->scaley + env->posy;
-	b.color = p2.color;
+	b.x = (p1.x - p1.y) * env->scalex + env->posx;
+	b.y = (p1.y + p1.x) * env->scaley + env->posy;
+	b.color = p1.color;
 
 	a.y -= z.x * env->height;
 	b.y -= z.y * env->height;
 
-	draw_line(env, a, b);
+	draw_line(env, a, b, z);
 }
 
 void	projection(t_env *env)
@@ -79,69 +87,16 @@ void	projection(t_env *env)
 			if (curr->next != NULL)
 			{
 				z = set_pixel(((int*)(curr->content))[j],
-					((int*)(curr->next->content))[j], BLUE);
-				draw_map_iso(env, set_pixel(i, j, BLUE),
-					set_pixel(i + 1, j, BLUE), z);
+					((int*)(curr->next->content))[j], 0);
+				draw_map_iso(env, set_pixel(i, j, 0),set_pixel(i + 1, j, 0), z);
 			}
 			if (j < env->nbr_line - 1)
 			{
 				z = set_pixel(((int*)(curr->content))[j],
-					((int*)(curr->content))[j + 1], BLUE);
-				draw_map_iso(env, set_pixel(i, j, BLUE),
-					set_pixel(i, j + 1, BLUE), z);
+					((int*)(curr->content))[j + 1], 0);
+				draw_map_iso(env, set_pixel(i, j, 0),set_pixel(i, j + 1, 0), z);
 			}
 		}
 		curr = curr->next;
 	}
 }
-
-/*void	projection(t_env env, t_list *map)
-{
-	int 		cte;
-	int			i;
-	int 		line;
-	int			decX;
-	int			tmpDecX;
-	t_coords	p;
-	t_coords	p2;
-	t_coords	p3;
-	t_list		*curr;
-
-	cte = 23;
-	decX = 0;
-	tmpDecX = 15;
-	line = (HAUTEUR_IMG / 100) + 3;
-	curr = map;
-	while (curr)
-	{
-		i = 0;
-		p.x = (LARGEUR_IMG / 9) + decX;
-		while (i <= 19) //have to use arrlen
-		{
-			//curr->next->content[i]
-			//X = (((int*)(curr->content))[i] * cos(M_PI/6) - ((int*)(curr->content))[i] * sin(M_PI/3)) + c;
-			//Y = (((int*)(curr->content))[i] * sin(M_PI/6) + ((int*)(curr->content))[i] * cos(M_PI/3)) + c;
-
-			p.x += cte;
-			p.y = line * cte;
-			p.color = GREEN;
-
-			p2.x = p.x + cte;
-			p2.y = p.y - (5 * ((int*)(curr->content))[i]);
-			p2.color = p.color;
-
-			p3.x = p.x + tmpDecX;
-			p3.y = p.y + cte;
-			p3.color = p.color;
-
-			if (i != 19)
-				draw_line(env, p, p2);
-			if (curr->next !=  NULL)
-				draw_line(env, p, p3);
-			++i;
-		}
-		++line;
-		decX += 15;
-		curr = curr->next;
-	}
-}*/

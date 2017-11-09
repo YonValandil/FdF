@@ -1,6 +1,6 @@
 #include "FdF.h"
 
-void	put_pixel_img(t_env *env, t_coords p)
+void put_pixel_img(t_env *env, t_coords p)
 {
 	int		r;
 	int		g;
@@ -20,7 +20,25 @@ void	put_pixel_img(t_env *env, t_coords p)
 	}
 }
 
-void 		set_img(t_env *env)
+void set_string(t_env *env)
+{
+	mlx_string_put(env->mlx, env->win.ptr, 20, 20, GREEN,
+		"press ESC: QUIT");
+	mlx_string_put(env->mlx, env->win.ptr, 20, 40, GREEN,
+		"press SPACE: RESET");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 20, GREEN,
+		"press T: ZOOM UP");
+	mlx_string_put(env->mlx, env->win.ptr, 220, 40, GREEN,
+		"press G: ZOOM DOWN");
+	mlx_string_put(env->mlx, env->win.ptr, 420, 20, GREEN,
+		"press Y: UP_Z");
+	mlx_string_put(env->mlx, env->win.ptr, 420, 40, GREEN,
+		"press H: DOWN_Z");
+	mlx_string_put(env->mlx, env->win.ptr, 620, 20, GREEN,
+		"USE: ARROWS for MOVE");
+}
+
+void set_img(t_env *env)
 {
     env->img.ptr = mlx_new_image(env->mlx, env->img.l, env->img.h);
     env->img.data = mlx_get_data_addr(env->img.ptr, &env->img.bpp,
@@ -28,25 +46,17 @@ void 		set_img(t_env *env)
 	mlx_clear_window(env->mlx, env->win.ptr);
 	projection(env);
     mlx_put_image_to_window(env->mlx, env->win.ptr, env->img.ptr, 0, 0);
-	mlx_string_put(env->mlx, env->win.ptr, 20, 20, GREEN, "press ESC: QUIT");
-	mlx_string_put(env->mlx, env->win.ptr, 20, 40, GREEN, "press SPACE: RESET");
-	mlx_string_put(env->mlx, env->win.ptr, 220, 20, GREEN, "press Z: ZOOM UP");
-	mlx_string_put(env->mlx, env->win.ptr, 220, 40, GREEN, "press S: ZOOM DOWN");
-	mlx_string_put(env->mlx, env->win.ptr, 420, 20, GREEN, "press A: UP_Z");
-	mlx_string_put(env->mlx, env->win.ptr, 420, 40, GREEN, "press Q: DOWN_Z");
-	mlx_string_put(env->mlx, env->win.ptr, 620, 20, GREEN, "USE: ARROWS for MOVE");
+	set_string(env);
 	mlx_destroy_image(env->mlx, env->img.ptr);
 }
 
-void	   set_env(t_env *env)
+void set_env(t_env *env)
 {
     env->win.l = LARGEUR;
     env->win.h = HAUTEUR;
     env->win.title = ft_strdup("mlx 42 FdF");
-
     env->img.l = LARGEUR_IMG;
     env->img.h = HAUTEUR_IMG;
-
 	env->map = NULL;
 	env->nbr_line = 0;
 	env->height = 5;

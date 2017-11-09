@@ -42,17 +42,21 @@ int			controller(int keycode, void *param)
 	t_env *env;
 
 	env = (t_env*)param;
-    printf("keycode = %d\n\n", keycode);
+    printf("keycode = %d\n\n", keycode);//
 
 	if (keycode == ESCAPE_M || keycode == ESCAPE_L)
 	{
-    	mlx_destroy_image(env->mlx, env->win.ptr);
-    	exit(0);
+		//free
+    	exit(EXIT_SUCCESS);
 	}
 	if (keycode == UP_M || keycode == UP_L || keycode == DOWN_M ||
 		keycode == DOWN_L || keycode == LEFT_M || keycode == LEFT_L ||
 		keycode == RIGHT_M || keycode == RIGHT_L)
 		translate(keycode, env);
+	if (keycode == R_UP_M || keycode == R_UP_L || keycode == R_DOWN_M ||
+		keycode == R_DOWN_L || keycode == R_LEFT_M || keycode == R_LEFT_L ||
+		keycode == R_RIGHT_M || keycode == R_RIGHT_L)
+		rotate(keycode, env);
 	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L ||
 		keycode == ZOOM_OUT_M || keycode == ZOOM_OUT_L)
 		scale(keycode, env);
@@ -101,7 +105,7 @@ int		parse(t_env *env, char *buff) //verif a faire pour map non valide
 		ft_strdel(&line);
     }
 	close(fd);
-	return (1); //a verifier pour une map full vide
+	return (0);
 }
 
 int         main(int argc, char *argv[])
@@ -121,14 +125,13 @@ int         main(int argc, char *argv[])
     if((parse(&env, argv[1])))
     {
         write(1, "map invalide", 12);
-        //return (0);
+        return (0);
     }
 
 	printMap_console(&env);
 	set_img(&env);
 
 	mlx_hook(env.win.ptr, 2, 3, controller, &env);
-	//mlx_hook(env.win.ptr, 17, 0L, destroy, &env);
     mlx_loop(env.mlx);
     return (0);
 }
