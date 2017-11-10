@@ -1,33 +1,12 @@
 #include "FdF.h"
 
-int		ft_error(char *s, int err)
+int		parse_grid(t_env *env, char **grid, int *tmp)
 {
-	ft_putendl(s);
-	return (err);
-}
-
-int		parse_grid(t_env *env, char **grid, t_list *list)
-{
-	// t_list		*list;
-    int         *tmp;
 	int			i;
 
-	env->nbr_line = ft_arrlen((void**)grid);
-	printf("\narrlen parse = %zu\n", env->nbr_line);
-
-    if(!(tmp = ft_memalloc(sizeof(int) * env->nbr_line)))
-		return (ft_error("memalloc error", -1));
-	i = 0;
-	// list = NULL;
-	while (grid[i])
-	{
-		tmp[i] = ft_atoi(grid[env->nbr_line - 1 - i]);
-		printf("\ntmp[%d] = %d", i, tmp[i]);
-		++i;
-	}
-	env->map = list;
-	ft_lstadd_end(&list, ft_lstnew(tmp, env->nbr_line * sizeof(int)));
-	ft_memdel((void*)&tmp);
+	i = -1;
+	while (grid[++i])
+		tmp[i] = ft_atoi(grid[env->nbr_col - 1 - i]);
 	return (0);
 }
 
@@ -36,21 +15,23 @@ int		parse(t_env *env, char *buff)
     char        *line;
     char        **grid;
 	int			fd;
-	int			tmpaff;
-	t_list		*list;
+	int			*tmp;
 
-	tmpaff = 0;
-	list = NULL;
     if((fd = open(buff, O_RDONLY)) <= 0)
-		return (ft_error("open file error", -1));
+		exit_error("open file error");
     while (get_next_line(fd, &line) > 0)
     {
 		grid = ft_strsplit(line, ' ');
 		ft_strdel(&line);
-		if (parse_grid(env, grid, list) < 0)
-			return (ft_error("parse error", -1));
-		tmpaff++;
-		printf("\n---------------------- %d\n", tmpaff);
+		env->nbr_col = arrlen((void**)grid);
+		env->nbr_line++;
+	    if(!(tmp = ft_memalloc(sizeof(int) * env->nbr_col)))
+			exit_error("memalloc error");
+		if (parse_grid(env, grid, tmp) < 0)
+			return (-1);
+		ft_lstadd_end(&(env)->map, ft_lstnew(tmp, env->nbr_col * sizeof(int)));
+		ft_memdel((void*)&tmp);
+		arrdel((void***)&grid); //pas sur sans size
     }
 	close(fd);
 	return (0);

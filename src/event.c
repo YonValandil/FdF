@@ -2,32 +2,32 @@
 
 void height(int keycode, t_env *env)
 {
-	if (keycode == UP_Z_M || keycode == UP_Z_L)
+	if (keycode == UP_Z)
 		env->height += 1;
-	if (keycode == DOWN_Z_M || keycode == DOWN_Z_L)
+	if (keycode == DOWN_Z)
 		env->height -= 1;
 }
 
 void rotate(int keycode, t_env *env)
 {
-	if (keycode == R_UP_M || keycode == R_UP_L)
+	if (keycode == R_UP)
 		env->scaley += 2;
-	if (keycode == R_DOWN_M || keycode == R_DOWN_L)
+	if (keycode == R_DOWN)
 		env->scaley -= 2;
-	if (keycode == R_LEFT_M || keycode == R_LEFT_L)
+	if (keycode == R_LEFT)
 		env->scalex +=2;
-	if (keycode == R_RIGHT_M || keycode == R_RIGHT_L)
+	if (keycode == R_RIGHT)
 		env->scalex -=2;
 }
 
 void scale(int keycode, t_env *env)
 {
-	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L)
+	if (keycode == ZOOM_IN)
 	{
 		env->scalex += 2;
 		env->scaley += 1;
 	}
-	if (keycode == ZOOM_OUT_M|| keycode == ZOOM_OUT_L)
+	if (keycode == ZOOM_OUT)
 	{
 		env->scalex -= 2;
 		env->scaley -= 1;
@@ -36,13 +36,13 @@ void scale(int keycode, t_env *env)
 
 void translate(int keycode, t_env *env)
 {
-	if (keycode == UP_M || keycode == UP_L)
+	if (keycode == UP)
 		env->posy -= 7;
-	if (keycode == DOWN_M || keycode == DOWN_L)
+	if (keycode == DOWN)
 		env->posy += 7;
-	if (keycode == LEFT_M || keycode == LEFT_L)
+	if (keycode == LEFT)
 		env->posx -=7;
-	if (keycode == RIGHT_M || keycode == RIGHT_L)
+	if (keycode == RIGHT)
 		env->posx +=7;
 }
 

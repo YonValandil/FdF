@@ -59,6 +59,7 @@ void set_env(t_env *env)
     env->img.h = HAUTEUR_IMG;
 	env->map = NULL;
 	env->nbr_line = 0;
+	env->nbr_col = 0;
 	env->height = 5;
 	env->scalex = 30;
 	env->scaley = 15;

@@ -12,6 +12,39 @@
 
 #include "FdF.h"
 
+void 		exit_error(const char *s)
+{
+	ft_putendl_fd(s, 2);
+	exit(EXIT_FAILURE);
+}
+
+size_t		arrlen(void **arr)
+{
+    size_t  i;
+    i = 0;
+
+    while ((unsigned char*)arr[i])
+        ++i;
+    return (i);
+}
+
+void		arrdel(void ***arr)
+{
+	void **tmp;
+
+	if(arr && *arr)
+	{
+		tmp = *arr;
+		while (*tmp)
+		{
+			ft_memdel(tmp);
+			++tmp;
+		}
+		free(*arr);
+		*arr = NULL;
+	}
+}
+
 void		printMap_console(t_env *env)
 {
 		t_list		*curr;
@@ -22,11 +55,12 @@ void		printMap_console(t_env *env)
 		tmp = 0;
 		curr = env->map;
 		printf("\nprintmap begin\n");
-		printf("\nprintmap len = %zu\n", env->nbr_line);
+		printf("\nprintmap len col = %zu\n", env->nbr_col);
+		printf("\nprintmap len line = %zu\n", env->nbr_line);
 		while (curr != NULL)
 		{
 			printf("\ntest passage boucle curr : nb %d\n", tmp);
-			while (i < env->nbr_line)
+			while (i < env->nbr_col)
 			{
 				printf("i = %zu, val[%d]\n", i, ((int*)(curr->content))[i]);
 				i++;
@@ -39,31 +73,26 @@ void		printMap_console(t_env *env)
 
 int			controller(int keycode, void *param)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = (t_env*)param;
     printf("keycode = %d\n\n", keycode);//
 
-	if (keycode == ESCAPE_M || keycode == ESCAPE_L)
+	if (keycode == ESCAPE)
 	{
-		//free
+		// ft_lstdel(&(env)->map, );
     	exit(EXIT_SUCCESS);
 	}
-	if (keycode == UP_M || keycode == UP_L || keycode == DOWN_M ||
-		keycode == DOWN_L || keycode == LEFT_M || keycode == LEFT_L ||
-		keycode == RIGHT_M || keycode == RIGHT_L)
+	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)
 		translate(keycode, env);
-	if (keycode == R_UP_M || keycode == R_UP_L || keycode == R_DOWN_M ||
-		keycode == R_DOWN_L || keycode == R_LEFT_M || keycode == R_LEFT_L ||
-		keycode == R_RIGHT_M || keycode == R_RIGHT_L)
+	if (keycode == R_UP || keycode == R_DOWN ||
+		keycode == R_LEFT || keycode == R_RIGHT)
 		rotate(keycode, env);
-	if (keycode == ZOOM_IN_M || keycode == ZOOM_IN_L ||
-		keycode == ZOOM_OUT_M || keycode == ZOOM_OUT_L)
+	if (keycode == ZOOM_IN || keycode == ZOOM_OUT)
 		scale(keycode, env);
-	if (keycode == UP_Z_M || keycode == UP_Z_L ||
-		keycode == DOWN_Z_M || keycode == DOWN_Z_L)
+	if (keycode == UP_Z || keycode == DOWN_Z)
 		height(keycode, env);
-	if (keycode == RESET_M || keycode == RESET_L)
+	if (keycode == RESET)
 		reset(env);
 	set_img(env);
 	return (0);
@@ -74,24 +103,14 @@ int         main(int argc, char *argv[])
     t_env       env;
 
     if(argc != 2)
-    {
-        return (0);
-        write(1, "usage: ./FdF File", 17);
-    }
-
+		exit_error("usage: ./FdF File");
     set_env(&env);
     env.mlx = mlx_init();
     env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
-
     if((parse(&env, argv[1])))
-    {
-        write(1, "map invalide", 12);
-        return (0);
-    }
-
+		exit_error("parse error");
 	printMap_console(&env);
 	set_img(&env);
-
 	mlx_hook(env.win.ptr, 2, 3, controller, &env);
     mlx_loop(env.mlx);
     return (0);

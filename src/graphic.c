@@ -3,10 +3,8 @@
 int			color(t_env *env, t_coords p0, t_coords p1, t_coords z)
 {
 	int val;
-	//int red;
 
-	//red = ;
-	val = p1.y - p0.y * env->height; //tmp pour les param non utilises (flag)
+	val = p1.y - p0.y * env->height;
 	val = 0x0000FF - ft_abs((z.x * env->height));
 	return (val);
 }
@@ -82,7 +80,7 @@ void	projection(t_env *env)
 	{
 		++i;
 		j = -1;
-		while (++j < env->nbr_line)
+		while (++j < env->nbr_col)
 		{
 			if (curr->next != NULL)
 			{
@@ -90,7 +88,7 @@ void	projection(t_env *env)
 					((int*)(curr->next->content))[j], 0);
 				draw_map_iso(env, set_pixel(i, j, 0),set_pixel(i + 1, j, 0), z);
 			}
-			if (j < env->nbr_line - 1)
+			if (j < env->nbr_col - 1)
 			{
 				z = set_pixel(((int*)(curr->content))[j],
 					((int*)(curr->content))[j + 1], 0);
