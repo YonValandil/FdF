@@ -12,7 +12,7 @@ MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx_Linux -L/usr/X11/lib -lXext
 HEADER =	./include/
 CFLAGS =	-Wall -Werror -Wextra -g
 ARFLAGS =	-rcs
-CFILES =	main get_next_line graphic event init
+CFILES =	main get_next_line graphic event init parsing
 
 SRCS =		$(CFILES:%=$(SRCS_DIR)%.c)
 OBJS =		$(SRCS:%.c=$(OBJS_DIR)%.o)

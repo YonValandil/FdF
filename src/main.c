@@ -69,45 +69,6 @@ int			controller(int keycode, void *param)
 	return (0);
 }
 
-int		parse(t_env *env, char *buff) //verif a faire pour map non valide
-{
-	t_list		*list;
-    char        *line;
-    char        **grid;
-    int         *tmp;
-	int			fd;
-	int			i;
-	int			tmpaff;
-
-	list = NULL;
-	tmpaff = 0;
-    fd = open(buff, O_RDONLY);
-    while (get_next_line(fd, &line) > 0)
-    {
-		grid = ft_strsplit(line, ' ');
-		env->nbr_line = ft_arrlen((void**)grid);
-		printf("\narrlen parse = %zu\n", env->nbr_line);
-
-        tmp = ft_memalloc(sizeof(int) * env->nbr_line);
-		i = 0;
-		while (grid[i])
-		{
-			tmp[i] = ft_atoi(grid[env->nbr_line - 1 - i]);
-			printf("\ntmp[%d] = %d", i, tmp[i]);
-			++i;
-		}
-		tmpaff++;
-		printf("\n-------------------------%d", tmpaff);
-
-		env->map = list;
-		ft_lstadd_end(&list, ft_lstnew(tmp, env->nbr_line * sizeof(int)));
-		ft_memdel((void*)&tmp);
-		ft_strdel(&line);
-    }
-	close(fd);
-	return (0);
-}
-
 int         main(int argc, char *argv[])
 {
     t_env       env;
