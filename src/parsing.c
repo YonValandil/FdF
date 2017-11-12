@@ -31,7 +31,7 @@ int		parse(t_env *env, char *buff)
 			return (-1);
 		ft_lstadd_end(&(env)->map, ft_lstnew(tmp, env->nbr_col * sizeof(int)));
 		ft_memdel((void*)&tmp);
-		arrdel((void***)&grid); //pas sur sans size
+		arrdel((void***)&grid);
     }
 	close(fd);
 	return (0);

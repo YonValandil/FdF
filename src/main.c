@@ -71,6 +71,25 @@ void		printMap_console(t_env *env)
 		}
 }
 
+// void 		del_map(void *map, size_t size)
+// {
+// 	size = 0;
+// 	ft_memdel((void*)&map);
+// }
+
+void 		del_map(void **map)
+{
+	t_list *curr;
+
+	curr = *map;
+	while (curr)
+	{
+		ft_memdel((void*)&(curr)->content);
+		curr = curr->next;
+	}
+	ft_memdel((void**)map);
+}
+
 int			controller(int keycode, void *param)
 {
 	t_env	*env;
@@ -80,7 +99,8 @@ int			controller(int keycode, void *param)
 
 	if (keycode == ESCAPE)
 	{
-		// ft_lstdel(&(env)->map, );
+		// ft_lstdel(&(env)->map, del_map);
+		del_map((void**)&(env)->map);
     	exit(EXIT_SUCCESS);
 	}
 	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)

@@ -120,7 +120,7 @@ void		set_env(t_env *env);
 void 		set_img(t_env *env);
 void 		set_string(t_env *env);
 int			parse(t_env *env, char *buff);
-void		projection(t_env *env);//
+void		projection(t_env *env);
 void		put_pixel_img(t_env *env, t_coords p);
 t_coords 	set_pixel(int x, int y, int color);
 void		draw_line(t_env *env, t_coords p0, t_coords p1, t_coords z);
