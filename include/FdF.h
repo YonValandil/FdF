@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/13 06:30:49 by yon              ###   ########.fr       */
+/*   Updated: 2017/11/12 19:56:24 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "libft.h"
 # include <math.h>
 # include "get_next_line.h"
-# include <stdio.h> //
 
 # define BLANK			0x00FFFFFF
 # define BLUE			0x000000FF
@@ -44,20 +43,20 @@
 #  define ESCAPE		65307
 #  define RESET			32
 # elif defined(__APPLE__)
-#  define UP			65362
-#  define DOWN			65364
-#  define LEFT			65361
-#  define RIGHT			65363
-#  define R_UP			122
-#  define R_DOWN		115
-#  define R_LEFT		113
-#  define R_RIGHT		100
-#  define ZOOM_IN		116
-#  define ZOOM_OUT		103
-#  define UP_Z			121
-#  define DOWN_Z		104
-#  define ESCAPE		65307
-#  define RESET			32
+#  define UP			126
+#  define DOWN			125
+#  define LEFT			123
+#  define RIGHT			124
+#  define R_UP			13
+#  define R_DOWN		1
+#  define R_LEFT		0
+#  define R_RIGHT		2
+#  define ZOOM_IN		17
+#  define ZOOM_OUT		5
+#  define UP_Z			16
+#  define DOWN_Z		4
+#  define ESCAPE		53
+#  define RESET			49
 # endif
 
 typedef struct		s_coords

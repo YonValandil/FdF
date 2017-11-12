@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/10/02 06:37:43 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/11/12 19:56:02 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,49 +45,10 @@ void		arrdel(void ***arr)
 	}
 }
 
-void		printMap_console(t_env *env)
+void 		del_map(void *map, size_t size)
 {
-		t_list		*curr;
-		size_t		i;
-		int			tmp;
-
-		i = 0;
-		tmp = 0;
-		curr = env->map;
-		printf("\nprintmap begin\n");
-		printf("\nprintmap len col = %zu\n", env->nbr_col);
-		printf("\nprintmap len line = %zu\n", env->nbr_line);
-		while (curr != NULL)
-		{
-			printf("\ntest passage boucle curr : nb %d\n", tmp);
-			while (i < env->nbr_col)
-			{
-				printf("i = %zu, val[%d]\n", i, ((int*)(curr->content))[i]);
-				i++;
-			}
-			i = 0;
-			tmp++;
-			curr = curr->next;
-		}
-}
-
-// void 		del_map(void *map, size_t size)
-// {
-// 	size = 0;
-// 	ft_memdel((void*)&map);
-// }
-
-void 		del_map(void **map)
-{
-	t_list *curr;
-
-	curr = *map;
-	while (curr)
-	{
-		ft_memdel((void*)&(curr)->content);
-		curr = curr->next;
-	}
-	ft_memdel((void**)map);
+	(void)size;
+ 	ft_memdel((void*)&map);
 }
 
 int			controller(int keycode, void *param)
@@ -95,12 +56,10 @@ int			controller(int keycode, void *param)
 	t_env	*env;
 
 	env = (t_env*)param;
-    printf("keycode = %d\n\n", keycode);//
 
 	if (keycode == ESCAPE)
 	{
-		// ft_lstdel(&(env)->map, del_map);
-		del_map((void**)&(env)->map);
+		ft_lstdel(&(env)->map, del_map);
     	exit(EXIT_SUCCESS);
 	}
 	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)
