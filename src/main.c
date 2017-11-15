@@ -51,32 +51,6 @@ void 		del_map(void *map, size_t size)
  	ft_memdel((void*)&map);
 }
 
-int			controller(int keycode, void *param)
-{
-	t_env	*env;
-
-	env = (t_env*)param;
-
-	if (keycode == ESCAPE)
-	{
-		ft_lstdel(&(env)->map, del_map);
-    	exit(EXIT_SUCCESS);
-	}
-	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)
-		translate(keycode, env);
-	if (keycode == R_UP || keycode == R_DOWN ||
-		keycode == R_LEFT || keycode == R_RIGHT)
-		rotate(keycode, env);
-	if (keycode == ZOOM_IN || keycode == ZOOM_OUT)
-		scale(keycode, env);
-	if (keycode == UP_Z || keycode == DOWN_Z)
-		height(keycode, env);
-	if (keycode == RESET)
-		reset(env);
-	set_img(env);
-	return (0);
-}
-
 int         main(int argc, char *argv[])
 {
     t_env       env;
@@ -86,9 +60,7 @@ int         main(int argc, char *argv[])
     set_env(&env);
     env.mlx = mlx_init();
     env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
-    if((parse(&env, argv[1])))
-		exit_error("parse error");
-	printMap_console(&env);
+    parse(&env, argv[1]);
 	set_img(&env);
 	mlx_hook(env.win.ptr, 2, 3, controller, &env);
     mlx_loop(env.mlx);

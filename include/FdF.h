@@ -22,10 +22,12 @@
 # define BLUE			0x000000FF
 # define GREEN			0x0000FF00
 # define RED			0x00FF0000
-# define HAUTEUR		600
-# define LARGEUR		910
-# define HAUTEUR_IMG	600
-# define LARGEUR_IMG	910
+# define RANGE_MAP		100000000
+# define RANGE_HEIGHT	100000000
+# define HEIGHT			600
+# define WIDTH			910
+# define HEIGHT_IMG		600
+# define WIDTH_IMG		910
 
 # if defined(linux) || defined(__linux) || defined(__linux__)
 #  define UP			65362
@@ -113,16 +115,19 @@ typedef struct		s_env
 }                   t_env;
 
 void 		exit_error(const char *s);
+void 		del_map(void *map, size_t size);
 size_t		arrlen(void **arr);
 void		arrdel(void ***arr);
 void		set_env(t_env *env);
-void 		set_img(t_env *env);
+void 		set_img(t_env *env);;
 void 		set_string(t_env *env);
-int			parse(t_env *env, char *buff);
+void		parse(t_env *env, char *buff);
+void		parse_grid(t_env *env, char **grid, int *tmp);
 void		projection(t_env *env);
+void 		projection_content(t_env *env, t_list *curr, size_t i, size_t j);
 void		put_pixel_img(t_env *env, t_coords p);
 t_coords 	set_pixel(int x, int y, int color);
-void		draw_line(t_env *env, t_coords p0, t_coords p1, t_coords z);
+void		draw_line(t_env *env, t_coords p0, t_coords p1);
 void 		draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z);
 int			controller(int keycode, void *param);
 void 		height(int keycode, t_env *env);

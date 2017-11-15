@@ -51,6 +51,6 @@ void reset(t_env *env)
 	env->height = 5;
 	env->scalex = 30;
 	env->scaley = 15;
-	env->posx = (LARGEUR_IMG / 2) + 125;
+	env->posx = (WIDTH_IMG / 2) + 125;
 	env->posy = 100;
 }

@@ -1,16 +1,21 @@
 #include "FdF.h"
 
-int		parse_grid(t_env *env, char **grid, int *tmp)
+void	parse_grid(t_env *env, char **grid, int *tmp)
 {
 	int			i;
 
 	i = -1;
 	while (grid[++i])
+	{
 		tmp[i] = ft_atoi(grid[env->nbr_col - 1 - i]);
-	return (0);
+		if (tmp[i] > RANGE_HEIGHT)
+			tmp[i] = RANGE_HEIGHT;
+		if (tmp[i] < -RANGE_HEIGHT)
+			tmp[i] = -RANGE_HEIGHT;
+	}
 }
 
-int		parse(t_env *env, char *buff)
+void	parse(t_env *env, char *buff)
 {
     char        *line;
     char        **grid;
@@ -21,18 +26,20 @@ int		parse(t_env *env, char *buff)
 		exit_error("open file error");
     while (get_next_line(fd, &line) > 0)
     {
+		env->nbr_line++;
+		if (env->nbr_line > RANGE_MAP)
+			exit_error("too much lines");
 		grid = ft_strsplit(line, ' ');
 		ft_strdel(&line);
 		env->nbr_col = arrlen((void**)grid);
-		env->nbr_line++;
+		if (env->nbr_col > RANGE_MAP)
+		 exit_error("too much columns");
 	    if(!(tmp = ft_memalloc(sizeof(int) * env->nbr_col)))
 			exit_error("memalloc error");
-		if (parse_grid(env, grid, tmp) < 0)
-			return (-1);
+		parse_grid(env, grid, tmp);
 		ft_lstadd_end(&(env)->map, ft_lstnew(tmp, env->nbr_col * sizeof(int)));
 		ft_memdel((void*)&tmp);
 		arrdel((void***)&grid);
     }
 	close(fd);
-	return (0);
 }

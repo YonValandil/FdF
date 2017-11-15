@@ -6,11 +6,11 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 03:10:37 by jjourne           #+#    #+#             */
-/*   Updated: 2017/08/31 08:16:35 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/11/01 22:06:46 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../include/get_next_line.h"
 
 t_fd_list	*fd_search(int fd, t_fd_list **l)
 {
@@ -20,14 +20,11 @@ t_fd_list	*fd_search(int fd, t_fd_list **l)
 	while (curr)
 	{
 		if (curr->fd == fd)
-		{
 			return (curr);
-		}
 		curr = curr->next;
 	}
-	if (!curr)
+	if (!curr && (curr = (t_fd_list*)ft_memalloc(sizeof(t_fd_list))))
 	{
-		curr = (t_fd_list*)ft_memalloc(sizeof(t_fd_list));
 		curr->fd = fd;
 		curr->i = 0;
 		curr->content = NULL;
@@ -65,7 +62,7 @@ void		*ft_memjoin(void const *s1, void const *s2, size_t n1, size_t n2)
 	return ((unsigned char*)ns);
 }
 
-int			make_line_2(t_fd_list *curr, char **line)
+int			make_line(t_fd_list *curr, char **line)
 {
 	char *tmp;
 
@@ -88,11 +85,11 @@ int			make_line_2(t_fd_list *curr, char **line)
 	return (0);
 }
 
-int			ft_norme(t_fd_list *curr, char **line)
+int			last_check(t_fd_list *curr, char **line)
 {
 	if (curr->i > 0)
 	{
-		if (make_line_2(curr, line))
+		if (make_line(curr, line))
 			return (1);
 		if (curr->i > 0)
 			*line = ft_memcpy(ft_memalloc(curr->i + 1), curr->content, curr->i);
@@ -113,15 +110,16 @@ int			get_next_line(const int fd, char **line)
 
 	if (fd < 0 || !line || BUFF_SIZE <= 0 || read(fd, b, 0) < 0)
 		return (-1);
-	curr = fd_search(fd, &l);
+	if (!(curr = fd_search(fd, &l)))
+		return (-1);
 	while (0 < (r = read(curr->fd, b, BUFF_SIZE)))
 	{
 		tmp = curr->content;
 		curr->content = ft_memjoin(curr->content, b, curr->i, r + 1);
 		curr->i += r;
 		ft_memdel((void*)&tmp);
-		if (make_line_2(curr, line))
+		if (make_line(curr, line))
 			return (1);
 	}
-	return (ft_norme(curr, line));
+	return (last_check(curr, line));
 }

@@ -1,5 +1,31 @@
 #include "FdF.h"
 
+int			controller(int keycode, void *param)
+{
+	t_env	*env;
+
+	env = (t_env*)param;
+
+	if (keycode == ESCAPE)
+	{
+		ft_lstdel(&(env)->map, del_map);
+    	exit(EXIT_SUCCESS);
+	}
+	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)
+		translate(keycode, env);
+	if (keycode == R_UP || keycode == R_DOWN ||
+		keycode == R_LEFT || keycode == R_RIGHT)
+		rotate(keycode, env);
+	if (keycode == ZOOM_IN || keycode == ZOOM_OUT)
+		scale(keycode, env);
+	if (keycode == UP_Z || keycode == DOWN_Z)
+		height(keycode, env);
+	if (keycode == RESET)
+		reset(env);
+	set_img(env);
+	return (0);
+}
+
 void put_pixel_img(t_env *env, t_coords p)
 {
 	int		r;
@@ -9,7 +35,7 @@ void put_pixel_img(t_env *env, t_coords p)
 	r = (p.color & 0xFF0000) >> 16;
 	g = (p.color & 0xFF00) >> 8;
 	b = (p.color & 0xFF);
-	if (p.y >= 0 && p.x >= 0 && p.y < HAUTEUR_IMG && p.x < LARGEUR_IMG)
+	if (p.y >= 0 && p.x >= 0 && p.y < HEIGHT_IMG && p.x < WIDTH_IMG)
 	{
 		env->img.data[(p.y * env->img.size_line) +
 			((env->img.bpp / 8) * p.x) + 2] = r;
@@ -52,17 +78,17 @@ void set_img(t_env *env)
 
 void set_env(t_env *env)
 {
-    env->win.l = LARGEUR;
-    env->win.h = HAUTEUR;
+    env->win.l = WIDTH;
+    env->win.h = HEIGHT;
     env->win.title = ft_strdup("mlx 42 FdF");
-    env->img.l = LARGEUR_IMG;
-    env->img.h = HAUTEUR_IMG;
+    env->img.l = WIDTH_IMG;
+    env->img.h = HEIGHT_IMG;
 	env->map = NULL;
 	env->nbr_line = 0;
 	env->nbr_col = 0;
 	env->height = 5;
 	env->scalex = 30;
 	env->scaley = 15;
-	env->posx = (LARGEUR_IMG / 2) + 125;
+	env->posx = (WIDTH_IMG / 2) + 125;
 	env->posy = 100;
 }
