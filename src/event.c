@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   event.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/25 09:59:14 by jjourne           #+#    #+#             */
+/*   Updated: 2017/11/25 10:16:04 by jjourne          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "FdF.h"
 
-void height(int keycode, t_env *env)
+void	height(int keycode, t_env *env)
 {
 	if (keycode == UP_Z)
 		env->height += 1;
@@ -8,19 +20,19 @@ void height(int keycode, t_env *env)
 		env->height -= 1;
 }
 
-void rotate(int keycode, t_env *env)
+void	rotate(int keycode, t_env *env)
 {
 	if (keycode == R_UP)
 		env->scaley += 2;
 	if (keycode == R_DOWN)
 		env->scaley -= 2;
 	if (keycode == R_LEFT)
-		env->scalex +=2;
+		env->scalex += 2;
 	if (keycode == R_RIGHT)
-		env->scalex -=2;
+		env->scalex -= 2;
 }
 
-void scale(int keycode, t_env *env)
+void	scale(int keycode, t_env *env)
 {
 	if (keycode == ZOOM_IN)
 	{
@@ -34,19 +46,19 @@ void scale(int keycode, t_env *env)
 	}
 }
 
-void translate(int keycode, t_env *env)
+void	translate(int keycode, t_env *env)
 {
 	if (keycode == UP)
 		env->posy -= 7;
 	if (keycode == DOWN)
 		env->posy += 7;
 	if (keycode == LEFT)
-		env->posx -=7;
+		env->posx -= 7;
 	if (keycode == RIGHT)
-		env->posx +=7;
+		env->posx += 7;
 }
 
-void reset(t_env *env)
+void	reset(t_env *env)
 {
 	env->height = 5;
 	env->scalex = 30;

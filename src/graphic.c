@@ -1,38 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   graphic.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/25 09:59:21 by jjourne           #+#    #+#             */
+/*   Updated: 2017/11/25 10:13:58 by jjourne          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "FdF.h"
 
-t_coords    set_pixel(int x, int y, int color)
+t_coords	set_pixel(int x, int y, int color)
 {
-    t_coords p;
+	t_coords p;
 
-    p.x = x;
-    p.y = y;
-    p.color = color;
-
-    return (p);
+	p.x = x;
+	p.y = y;
+	p.color = color;
+	return (p);
 }
 
-void 		draw_line(t_env *env, t_coords p0, t_coords p1)
+void		draw_line(t_env *env, t_coords p0, t_coords p1)
 {
 	t_line	line;
-    int		err_tmp;
+	int		err_tmp;
 
 	line.dx = ft_abs(p1.x - p0.x);
 	line.incr_x = p0.x < p1.x ? 1 : -1;
 	line.dy = ft_abs(p1.y - p0.y);
 	line.incr_y = p0.y < p1.y ? 1 : -1;
 	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
-	while(1)
+	while (1)
 	{
 		put_pixel_img(env, set_pixel(p0.x, p0.y, p0.color));
-    	if (p0.x==p1.x && p0.y==p1.y)
-			break;
-    	err_tmp = line.err;
-    	if (err_tmp >- line.dx)
+		if (p0.x == p1.x && p0.y == p1.y)
+			break ;
+		err_tmp = line.err;
+		if (err_tmp > -line.dx)
 		{
 			line.err -= line.dy;
 			p0.x += line.incr_x;
 		}
-    	if (err_tmp < line.dy)
+		if (err_tmp < line.dy)
 		{
 			line.err += line.dx;
 			p0.y += line.incr_y;
@@ -40,10 +51,10 @@ void 		draw_line(t_env *env, t_coords p0, t_coords p1)
 	}
 }
 
-void	draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z)
+void		draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z)
 {
-	t_coords	a;
-	t_coords	b;
+	t_coords a;
+	t_coords b;
 
 	a.x = (p0.x - p0.y) * env->scalex + env->posx;
 	a.y = (p0.y + p0.x) * env->scaley + env->posy;
@@ -51,14 +62,12 @@ void	draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z)
 	b.x = (p1.x - p1.y) * env->scalex + env->posx;
 	b.y = (p1.y + p1.x) * env->scaley + env->posy;
 	b.color = p0.color;
-
 	a.y -= z.x * env->height;
 	b.y -= z.y * env->height;
-
 	draw_line(env, a, b);
 }
 
-void 	projection_content(t_env *env, t_list *curr, size_t i, size_t j)
+void		projection_content(t_env *env, t_list *curr, size_t i, size_t j)
 {
 	t_coords z;
 
@@ -76,11 +85,11 @@ void 	projection_content(t_env *env, t_list *curr, size_t i, size_t j)
 	}
 }
 
-void	projection(t_env *env)
+void		projection(t_env *env)
 {
-	size_t		i;
-	size_t		j;
-	t_list		*curr;
+	size_t i;
+	size_t j;
+	t_list *curr;
 
 	i = -1;
 	curr = env->map;
