@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 03:10:37 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/01 22:06:46 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/11/27 05:57:27 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,13 @@ int			last_check(t_fd_list *curr, char **line)
 
 int			get_next_line(const int fd, char **line)
 {
-	size_t				r;
+	ssize_t				r;
 	char				b[(BUFF_SIZE + 1 < 0) ? 1 : BUFF_SIZE + 1];
 	static t_fd_list	*l = NULL;
 	t_fd_list			*curr;
 	char				*tmp;
 
-	if (fd < 0 || !line || BUFF_SIZE <= 0 || read(fd, b, 0) < 0)
+	if (fd < 0 || !line || BUFF_SIZE <= 0)
 		return (-1);
 	if (!(curr = fd_search(fd, &l)))
 		return (-1);
@@ -121,5 +121,7 @@ int			get_next_line(const int fd, char **line)
 		if (make_line(curr, line))
 			return (1);
 	}
+	if (r == -1)
+		return (-1);
 	return (last_check(curr, line));
 }

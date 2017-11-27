@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:05 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/25 10:03:39 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/11/27 06:00:17 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ void	parse(t_env *env, char *buff)
 	char	**grid;
 	int		fd;
 	int		*tmp;
+	int ret;
 
-	if ((fd = open(buff, O_RDONLY)) <= 0)
+	if ((fd = open(buff, O_RDONLY)) < 0)
 		exit_error("open file error");
-	while (get_next_line(fd, &line) > 0)
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		env->nbr_line++;
 		if (env->nbr_line > RANGE_MAP)
@@ -53,5 +54,7 @@ void	parse(t_env *env, char *buff)
 		ft_memdel((void*)&tmp);
 		arrdel((void***)&grid);
 	}
+	if (ret == -1)
+	exit(1);
 	close(fd);
 }
