@@ -7,10 +7,9 @@ LIB =		ft
 SRCS_DIR =	./src/
 OBJS_DIR =	./
 LIB_DIR = 	./libft/
-#MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
-MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx_Linux -L/usr/X11/lib -lXext -lX11
+MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 HEADER =	./include/
-CFLAGS =	-Wall -Werror -Wextra -g
+CFLAGS =	-Wall -Wextra -g
 ARFLAGS =	-rcs
 CFILES =	main get_next_line graphic event init parsing
 

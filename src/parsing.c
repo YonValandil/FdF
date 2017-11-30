@@ -12,6 +12,25 @@
 
 #include "FdF.h"
 
+void 	free_parse(char **grid, int *tmp)
+{
+		ft_memdel((void*)&tmp);
+		arrdel((void***)&grid);
+}
+
+void 	ret_value(int ret)
+{
+	if (ret == -1)
+		exit_error("error open file");
+}
+
+void 	check_nbr_line(t_env *env)
+{
+		env->nbr_line++;
+		if (env->nbr_line > RANGE_MAP)
+			exit_error("too much lines");
+}
+
 void	parse_grid(t_env *env, char **grid, int *tmp)
 {
 	int i;
@@ -33,15 +52,13 @@ void	parse(t_env *env, char *buff)
 	char	**grid;
 	int		fd;
 	int		*tmp;
-	int ret;
+	int 	ret;
 
 	if ((fd = open(buff, O_RDONLY)) < 0)
 		exit_error("open file error");
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		env->nbr_line++;
-		if (env->nbr_line > RANGE_MAP)
-			exit_error("too much lines");
+		check_nbr_line(env);
 		grid = ft_strsplit(line, ' ');
 		ft_strdel(&line);
 		env->nbr_col = arrlen((void**)grid);
@@ -51,10 +68,8 @@ void	parse(t_env *env, char *buff)
 			exit_error("memalloc error");
 		parse_grid(env, grid, tmp);
 		ft_lstadd_end(&(env)->map, ft_lstnew(tmp, env->nbr_col * sizeof(int)));
-		ft_memdel((void*)&tmp);
-		arrdel((void***)&grid);
+		free_parse(grid, tmp);
 	}
-	if (ret == -1)
-	exit(1);
+	ret_value(ret);
 	close(fd);
 }

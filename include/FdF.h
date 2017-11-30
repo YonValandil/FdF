@@ -135,5 +135,8 @@ void 		scale(int keycode, t_env *env);
 void 		translate(int keycode, t_env *env);
 void 		rotate(int keycode, t_env *env);
 void 		reset(t_env *env);
+void 		free_parse(char **grid, int *tmp);
+void 		ret_value(int ret);
+void 		check_nbr_line(t_env *env);
 
 #endif
