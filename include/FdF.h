@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/07 18:39:11 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/07 18:58:40 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void					del_map(void *map, size_t size);
 size_t					arrlen(void **arr);
 void					arrdel(void ***arr);
 void					set_env(t_env *env);
-void					set_img(t_env *env);;
+void					set_img(t_env *env);
 void					set_string(t_env *env);
 void					parse(t_env *env, char *buff);
 void					parse_grid(t_env *env, char **grid, int *tmp);
