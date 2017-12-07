@@ -6,29 +6,29 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:05 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/27 06:00:17 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/07 18:28:35 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-void 	free_parse(char **grid, int *tmp)
+void	free_parse(char **grid, int *tmp)
 {
-		ft_memdel((void*)&tmp);
-		arrdel((void***)&grid);
+	ft_memdel((void*)&tmp);
+	arrdel((void***)&grid);
 }
 
-void 	ret_value(int ret)
+void	ret_value(int ret)
 {
 	if (ret == -1)
 		exit_error("error open file");
 }
 
-void 	check_nbr_line(t_env *env)
+void	check_nbr_line(t_env *env)
 {
-		env->nbr_line++;
-		if (env->nbr_line > RANGE_MAP)
-			exit_error("too much lines");
+	env->nbr_line++;
+	if (env->nbr_line > RANGE_MAP)
+		exit_error("too much lines");
 }
 
 void	parse_grid(t_env *env, char **grid, int *tmp)
@@ -52,7 +52,7 @@ void	parse(t_env *env, char *buff)
 	char	**grid;
 	int		fd;
 	int		*tmp;
-	int 	ret;
+	int		ret;
 
 	if ((fd = open(buff, O_RDONLY)) < 0)
 		exit_error("open file error");

@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/12 19:56:24 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/07 18:39:11 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,82 +61,84 @@
 #  define RESET			49
 # endif
 
-typedef struct		s_coords
+typedef struct			s_coords
 {
-	int				x;
-	int				y;
-	unsigned int	color;
-}					t_coords;
+	int					x;
+	int					y;
+	unsigned int		color;
+}						t_coords;
 
-typedef struct		s_line
+typedef struct			s_line
 {
-	int 			dx;
-	int 			dy;
-	int				incr_x;
-	int				incr_y;
-	int				err;
-	t_coords		p1;
-	t_coords		p2;
+	int					dx;
+	int					dy;
+	int					incr_x;
+	int					incr_y;
+	int					err;
+	t_coords			p1;
+	t_coords			p2;
 
-}					t_line;
+}						t_line;
 
-typedef struct		s_img
+typedef struct			s_img
 {
-	int				l;
-	int				h;
-	int				bpp;
-	int				size_line;
-	int				endian;
-	void			*ptr;
-	char			*data;
-}                   t_img;
+	int					l;
+	int					h;
+	int					bpp;
+	int					size_line;
+	int					endian;
+	void				*ptr;
+	char				*data;
+}						t_img;
 
-typedef struct		s_win
+typedef struct			s_win
 {
-    int             l;
-    int             h;
-	void			*ptr;
-	char			*title;
-}                   t_win;
+    int					l;
+    int					h;
+	void				*ptr;
+	char				*title;
+}						t_win;
 
-typedef struct		s_env
+typedef struct			s_env
 {
-	void			*mlx;
-	size_t			nbr_line;
-	size_t			nbr_col;
-	int				height;
-	int				scalex;
-	int				scaley;
-	int				posx;
-	int				posy;
-	struct s_img	img;
-    struct s_win	win;
-	struct s_list	*map;
-}                   t_env;
+	void				*mlx;
+	size_t				nbr_line;
+	size_t				nbr_col;
+	int					height;
+	int					scalex;
+	int					scaley;
+	int					posx;
+	int					posy;
+	struct s_img		img;
+    struct s_win		win;
+	struct s_list		*map;
+}						t_env;
 
-void 		exit_error(const char *s);
-void 		del_map(void *map, size_t size);
-size_t		arrlen(void **arr);
-void		arrdel(void ***arr);
-void		set_env(t_env *env);
-void 		set_img(t_env *env);;
-void 		set_string(t_env *env);
-void		parse(t_env *env, char *buff);
-void		parse_grid(t_env *env, char **grid, int *tmp);
-void		projection(t_env *env);
-void 		projection_content(t_env *env, t_list *curr, size_t i, size_t j);
-void		put_pixel_img(t_env *env, t_coords p);
-t_coords 	set_pixel(int x, int y, int color);
-void		draw_line(t_env *env, t_coords p0, t_coords p1);
-void 		draw_map_iso(t_env *env, t_coords p0, t_coords p1, t_coords z);
-int			controller(int keycode, void *param);
-void 		height(int keycode, t_env *env);
-void 		scale(int keycode, t_env *env);
-void 		translate(int keycode, t_env *env);
-void 		rotate(int keycode, t_env *env);
-void 		reset(t_env *env);
-void 		free_parse(char **grid, int *tmp);
-void 		ret_value(int ret);
-void 		check_nbr_line(t_env *env);
+void					exit_error(const char *s);
+void					del_map(void *map, size_t size);
+size_t					arrlen(void **arr);
+void					arrdel(void ***arr);
+void					set_env(t_env *env);
+void					set_img(t_env *env);;
+void					set_string(t_env *env);
+void					parse(t_env *env, char *buff);
+void					parse_grid(t_env *env, char **grid, int *tmp);
+void					projection(t_env *env);
+void					projection_content(t_env *env, t_list *curr,
+	size_t i, size_t j);
+void					put_pixel_img(t_env *env, t_coords p);
+t_coords				set_pixel(int x, int y, int color);
+void					draw_line(t_env *env, t_coords p0, t_coords p1);
+void					draw_map_iso(t_env *env, t_coords p0,
+	t_coords p1, t_coords z);
+int						controller(int keycode, void *param);
+void					height(int keycode, t_env *env);
+void					scale(int keycode, t_env *env);
+void					translate(int keycode, t_env *env);
+void					rotate(int keycode, t_env *env);
+void					reset(t_env *env);
+void					free_parse(char **grid, int *tmp);
+void					ret_value(int ret);
+void					check_nbr_line(t_env *env);
 
 #endif
