@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:05 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/09 18:44:50 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 19:30:04 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ void	parse(t_env *env, char *buff)
 	int		*tmp;
 	int		ret;
 
+	if (ft_strncmp(ft_strrev(buff), "fdf.", 4) != 0)
+		exit_error("invalid format");
+	ft_strrev(buff);
 	if ((fd = open(buff, O_RDONLY)) < 0)
 		exit_error("open file error");
 	while ((ret = get_next_line(fd, &line)) > 0)
