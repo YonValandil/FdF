@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/27 05:57:47 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 17:29:32 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ size_t	arrlen(void **arr)
 
 void	arrdel(void ***arr)
 {
-	void **tmp;
+	char **tmp;
 
 	if (arr && *arr)
 	{
-		tmp = *arr;
+		tmp = *((char ***)arr);
 		while (*tmp)
 		{
-			ft_memdel(tmp);
+			ft_memdel((void **)tmp);
 			++tmp;
 		}
 		free(*arr);
@@ -58,9 +58,9 @@ int		main(int argc, char *argv[])
 	if (argc != 2)
 		exit_error("usage: ./FdF File");
 	set_env(&env);
+	parse(&env, argv[1]);
 	env.mlx = mlx_init();
 	env.win.ptr = mlx_new_window(env.mlx, env.win.l, env.win.h, env.win.title);
-	parse(&env, argv[1]);
 	set_img(&env);
 	mlx_hook(env.win.ptr, 2, 3, controller, &env);
 	mlx_loop(env.mlx);

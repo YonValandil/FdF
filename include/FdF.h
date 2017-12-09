@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/07 18:58:40 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 18:33:10 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define BLUE			0x000000FF
 # define GREEN			0x0000FF00
 # define RED			0x00FF0000
-# define RANGE_MAP		100000000
+# define RANGE_MAP		100000001
 # define RANGE_HEIGHT	100000000
 # define HEIGHT			600
 # define WIDTH			910

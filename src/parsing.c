@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:05 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/07 18:28:35 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 18:44:50 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_parse(char **grid, int *tmp)
 void	ret_value(int ret)
 {
 	if (ret == -1)
-		exit_error("error open file");
+		exit_error("open file error");
 }
 
 void	check_nbr_line(t_env *env)
@@ -38,6 +38,8 @@ void	parse_grid(t_env *env, char **grid, int *tmp)
 	i = -1;
 	while (grid[++i])
 	{
+		if (tmp[i] < '0' && tmp[i] > '9')
+			exit_error("map content error");
 		tmp[i] = ft_atoi(grid[env->nbr_col - 1 - i]);
 		if (tmp[i] > RANGE_HEIGHT)
 			tmp[i] = RANGE_HEIGHT;

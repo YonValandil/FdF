@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:58:52 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/25 10:04:52 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 15:02:51 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int		controller(int keycode, void *param)
 	env = (t_env*)param;
 	if (keycode == ESCAPE)
 	{
-		ft_lstdel(&(env)->map, del_map);
+		if (env->map)
+			ft_lstdel(&(env->map), del_map);
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode == UP || keycode == DOWN || keycode == LEFT || keycode == RIGHT)

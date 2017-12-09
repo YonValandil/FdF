@@ -9,7 +9,7 @@ OBJS_DIR =	./
 LIB_DIR = 	./libft/
 MLX = 		-I/usr/local/include/ -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 HEADER =	./include/
-CFLAGS =	-Wall -Wextra -g
+CFLAGS =	-Wall -Wextra -g -O3
 ARFLAGS =	-rcs
 CFILES =	main get_next_line graphic event init parsing
 

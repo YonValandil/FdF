@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 03:10:37 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/27 05:57:27 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/09 18:18:36 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_fd_list	*fd_search(int fd, t_fd_list **l)
 	return (curr);
 }
 
-void		*ft_memjoin(void const *s1, void const *s2, size_t n1, size_t n2)
+void		*ft_memjoin(void const * const s1, void const * const s2, size_t n1, size_t n2)
 {
 	size_t	i;
 	size_t	j;
@@ -48,18 +48,18 @@ void		*ft_memjoin(void const *s1, void const *s2, size_t n1, size_t n2)
 		if (ns == NULL)
 			return (NULL);
 		ns = ft_memcpy(ns, ((!s1) ? (void*)s2 : (void*)s1), ((!s1) ? n2 : n1));
-		return ((unsigned char*)ns);
+		return ((char*)ns);
 	}
 	i = -1;
 	j = -1;
-	ns = (unsigned char*)ft_memalloc(n1 + n2);
+	ns = (char*)ft_memalloc(n1 + n2);
 	if (ns == NULL)
 		return (NULL);
 	while (++i < n1)
-		((unsigned char*)ns)[i] = ((const unsigned char*)s1)[i];
+		((char*)ns)[i] = ((char*)s1)[i];
 	while (++j < n2)
-		((unsigned char*)ns)[i++] = ((const unsigned char*)s2)[j];
-	return ((unsigned char*)ns);
+		((char*)ns)[i++] = ((char*)s2)[j];
+	return ((char*)ns);
 }
 
 int			make_line(t_fd_list *curr, char **line)
