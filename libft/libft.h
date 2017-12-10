@@ -6,7 +6,7 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/12 09:35:14 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/07 04:06:37 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:55:32 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-size_t  			ft_arrlen(void **arr);
-int 				ft_abs(int x);
+size_t				ft_arrlen(void **arr);
+int					ft_abs(int x);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 size_t				ft_strlen(char const *s);
@@ -65,7 +65,8 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memccpy(void *dest, const void *src, int c, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);
-void 				*ft_memjoin(void const *s1, void const *s2, size_t n1, size_t n2);
+void				*ft_memjoin(void const *s1, void const *s2, size_t n1,
+	size_t n2);
 void				*ft_memchr(const void *s, int c, size_t n);
 char				*ft_itoa(int n);
 char				*ft_uimaxtoa_base(uintmax_t n, unsigned int base);

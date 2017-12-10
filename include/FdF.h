@@ -6,12 +6,12 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:40:59 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/09 18:33:10 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:42:41 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FdF_H
-# define FdF_H
+#ifndef FDF_H
+# define FDF_H
 
 # include </usr/local/include/mlx.h>
 # include "libft.h"
@@ -22,8 +22,8 @@
 # define BLUE			0x000000FF
 # define GREEN			0x0000FF00
 # define RED			0x00FF0000
-# define RANGE_MAP		100000001
-# define RANGE_HEIGHT	100000000
+# define RANGE_MAP		10000
+# define RANGE_HEIGHT	20000
 # define HEIGHT			600
 # define WIDTH			910
 # define HEIGHT_IMG		600
@@ -93,8 +93,8 @@ typedef struct			s_img
 
 typedef struct			s_win
 {
-    int					l;
-    int					h;
+	int					l;
+	int					h;
 	void				*ptr;
 	char				*title;
 }						t_win;
@@ -109,8 +109,10 @@ typedef struct			s_env
 	int					scaley;
 	int					posx;
 	int					posy;
+	size_t				check;
+	size_t				check2;
 	struct s_img		img;
-    struct s_win		win;
+	struct s_win		win;
 	struct s_list		*map;
 }						t_env;
 

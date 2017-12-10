@@ -6,11 +6,11 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:58:52 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/09 15:02:51 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:41:58 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FdF.h"
+#include "fdf.h"
 
 int		controller(int keycode, void *param)
 {
@@ -98,6 +98,8 @@ void	set_env(t_env *env)
 	env->map = NULL;
 	env->nbr_line = 0;
 	env->nbr_col = 0;
+	env->check = 0;
+	env->check2 = 0;
 	env->height = 5;
 	env->scalex = 30;
 	env->scaley = 15;

@@ -6,11 +6,11 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 06:08:31 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/09 17:29:32 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:41:16 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FdF.h"
+#include "fdf.h"
 
 void	exit_error(const char *s)
 {

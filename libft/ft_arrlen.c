@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_arrlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/12/10 19:53:20 by jjourne           #+#    #+#             */
+/*   Updated: 2017/12/10 19:54:06 by jjourne          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-size_t ft_arrlen(void **arr)
+size_t	ft_arrlen(void **arr)
 {
-    size_t  i;
-    i = 0;
+	size_t i;
 
-    while ((unsigned char*)arr[i])
-        ++i;
-    return (i);
+	i = 0;
+	while ((unsigned char*)arr[i])
+		++i;
+	return (i);
 }

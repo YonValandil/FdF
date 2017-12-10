@@ -6,11 +6,11 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:14 by jjourne           #+#    #+#             */
-/*   Updated: 2017/11/25 10:16:04 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:42:10 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FdF.h"
+#include "fdf.h"
 
 void	height(int keycode, t_env *env)
 {

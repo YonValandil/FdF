@@ -6,11 +6,11 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 09:59:21 by jjourne           #+#    #+#             */
-/*   Updated: 2017/12/09 16:54:47 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:42:33 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FdF.h"
+#include "fdf.h"
 
 t_coords	set_pixel(int x, int y, int color)
 {

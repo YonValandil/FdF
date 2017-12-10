@@ -6,13 +6,14 @@
 /*   By: jjourne <jjourne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 04:06:56 by jjourne           #+#    #+#             */
-/*   Updated: 2017/09/07 04:30:18 by jjourne          ###   ########.fr       */
+/*   Updated: 2017/12/10 19:50:00 by jjourne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char		*sizemallocstr(char *str, uintmax_t n, unsigned int divider, unsigned int base)
+static char		*sizemallocstr(char *str, uintmax_t n, unsigned int divider,
+	unsigned int base)
 {
 	while (n >= base)
 	{
@@ -27,7 +28,7 @@ static char		*sizemallocstr(char *str, uintmax_t n, unsigned int divider, unsign
 
 char			*ft_uimaxtoa_base(uintmax_t n, unsigned int base)
 {
-    char    		*str;
+	char			*str;
 	unsigned int	divider;
 	unsigned int	i;
 
@@ -48,5 +49,5 @@ char			*ft_uimaxtoa_base(uintmax_t n, unsigned int base)
 		++i;
 	}
 	str[i] = '\0';
-    return(str);
+	return (str);
 }
