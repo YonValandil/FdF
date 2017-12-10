@@ -8,7 +8,7 @@ NAME =		libft.a
 SRCS_DIR =	./
 OBJS_DIR =	./
 HEADER =	./
-CFLAGS =	-Wall -Werror -Wextra -g
+CFLAGS =	-Wall -Werror -Wextra
 ARFLAGS =	-rcs
 CFILES =	ft_putchar ft_putchar_fd ft_putstr ft_putstr_fd						\
 			ft_putnbr ft_putnbr_fd ft_putendl ft_putendl_fd						\
